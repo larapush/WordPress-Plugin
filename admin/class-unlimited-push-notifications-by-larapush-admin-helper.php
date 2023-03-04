@@ -179,21 +179,19 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 			if($response['response']['code'] != 200 or is_wp_error($response)){
                 $body = json_decode($response['body']);
 				$error = $body->message;
-				add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . $error, 'error' );
+                Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseError('Error: ' . $error);
                 return false;
 			}else{
                 $body = json_decode($response['body']);
 				if(!$body->success){
-                    add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
+                    Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseError('Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.');
                     return false;
 				}
-                var_dump(json_decode($response['body'])->data->integration->sw_firebase_filename);
-                var_dump(json_decode($response['body'])->data->integration->sw_firebase_code);
-
+                
                 // check if root of the website is writable, if yes, write the js file
                 if (is_writable(ABSPATH)) {
                     // Writing javascript file
-                    $old_files_name = get_options('unlimited_push_notifications_by_larapush_js_filenames_for_site', []);
+                    $old_files_name = get_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', []);
                     // Delete old files
                     foreach ($old_files_name as $old_file_name) {
                         $old_file = ABSPATH . $old_file_name;
@@ -226,7 +224,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 return true;
 			}
 		}catch(\Throwable $e){
-			add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
+            Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseError('Error: '.$e->getMessage());
             return false;
 		}
 
