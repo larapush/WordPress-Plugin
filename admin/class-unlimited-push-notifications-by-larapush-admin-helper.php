@@ -130,6 +130,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 			if($response['response']['code'] != 200 or is_wp_error($response)){
 				$body = json_decode($response['body']);
 				$error = $body->message;
+                
                 add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . $error, 'error' );
                 return false;
 			}else{
@@ -138,6 +139,57 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                     add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
                     return false;
 				}
+                return true;
+			}
+		}catch(\Throwable $e){
+			add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
+            return false;
+		}
+
+        return false;
+    }
+
+    public static function getCampaignFilter(){
+        $url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_url', ''));
+        $url_path = '/api/getCampaignFilter';
+        
+        $email = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_email', ''));
+        $password = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_password', ''));
+
+        // check if all 3 fields are filled
+        if (empty($url) || empty($email) || empty($password)) {
+            return false;
+        }
+
+        // Authenticate to LaraPush Panel
+		$panel_url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::assambleUrl($url, $url_path);
+        $response = wp_remote_post($panel_url, [
+            'headers' => [
+                'Accept' => 'application/json',
+                'content-type' => 'application/json',
+            ],
+            'body' => json_encode([
+                'email' => $email,
+                'password' => $password,
+            ]),
+        ]);
+
+		try{
+			if($response['response']['code'] != 200 or is_wp_error($response)){
+				$body = json_decode($response['body']);
+				$error = $body->message;
+                add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . $error, 'error' );
+                return false;
+			}else{
+				$body = json_decode($response['body']);
+				if(!$body->success){
+                    add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
+                    return false;
+				}
+
+                update_option('unlimited_push_notifications_by_larapush_panel_domains', $body->data->domains);
+                update_option('unlimited_push_notifications_by_larapush_panel_migrated_domains', $body->data->migrated_domains);
+
                 return true;
 			}
 		}catch(\Throwable $e){
@@ -221,6 +273,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                     update_option('unlimited_push_notifications_by_larapush_code_to_be_added_in_header', $code_to_be_added_in_header);
                 }
 
+                update_option('unlimited_push_notifications_by_larapush_panel_integration_done', true);
                 return true;
 			}
 		}catch(\Throwable $e){
@@ -229,5 +282,191 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 		}
 
         return false;
+    }
+
+    public static function send_notification($postId){
+        $meta = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::get_meta($postId);
+
+        $url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_url', ''));
+        $url_path = '/api/createCampaign';
+        
+        $email = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_email', ''));
+        $password = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_password', ''));
+
+        // check if all 3 fields are filled
+        if (empty($url) || empty($email) || empty($password)) {
+            return false;
+        }
+
+        // Authenticate to LaraPush Panel
+		$panel_url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::assambleUrl($url, $url_path);
+        $response = wp_remote_post($panel_url, [
+            'headers' => [
+                'Accept' => 'application/json',
+                'content-type' => 'application/json',
+            ],
+            'body' => json_encode([
+                'email' => $email,
+                'password' => $password,
+                'domains' => get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', []),
+                'migrated_domains' => get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', []),
+                'title' => $meta['title'],
+                'message' => $meta['body'],
+                'icon' => $meta['icon'],
+                'image' => $meta['image'],
+                'url' => $meta['url']
+            ]),
+        ]);
+
+		try{
+			if($response['response']['code'] != 200 or is_wp_error($response)){
+				$body = json_decode($response['body']);
+				$error = $body->message;
+                set_transient('larapush_error', 'Error: ' . $error, 30);
+                return false;
+			}else{
+				$body = json_decode($response['body']);
+				if(!$body->success){
+                    set_transient('larapush_error', 'Error: Some issue occurred while sending Push Notification.', 30);
+                    return false;
+				}
+                set_transient('larapush_success', $body->message, 30);
+                return true;
+			}
+		}catch(\Throwable $e){
+            set_transient('larapush_error', 'Error: ' . $error->getMessage(), 30);
+			return false;
+		}
+
+        return false;
+    }
+
+    /**
+     * Gets the meta data of the post
+     *
+     * @param int $postId
+     * @return array
+     */
+    public static function get_meta($postId)
+    {
+        // Getting the post title
+        $title = get_the_title($postId);
+        $title = str_replace('&#8211;', '-', $title);
+    
+        // Limiting the title to 7 words
+        $title = explode(' ', $title);
+        $title = implode(' ', array_slice($title, 0, 7));
+
+        // Converting Get the description of the post
+        $body = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::get_description($postId);
+        
+        // Getting the post icon
+        $icon = (get_site_icon_url(32) == "") ? '' : get_site_icon_url(32);
+
+        // Getting the post url
+        $url = get_permalink($postId);
+
+        // Getting the post image
+        $image = get_the_post_thumbnail_url($postId);
+
+        // If the post image is not found, get the first image of the post
+        // If the first image is not found, use example.com/image so to not show the image
+        if ($image == false) {
+            $image = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::first_image_of_the_post($postId);
+            if ($image == false) {
+                $image = '';
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'body' => $body,
+            'icon' => $icon,
+            'url' => $url,
+            'image' => $image,
+            'postId' => $postId,
+        );
+    }
+
+    /**
+     * Gets the first image url of the post
+     *
+     * @param int $postId
+     * @return string|false
+     */
+    public static function first_image_of_the_post($postId)
+    {
+        // Getting the post from ID
+        $post = get_post($postId);
+
+        // Getting the post content
+        $content = $post->post_content;
+
+        // Use a regular expression to search for the first image in the post content
+        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $content, $image);
+
+        // If an image is found, return the image URL
+        if (!empty($image)) {
+            $image_url = $image['src'];
+            return $image_url;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get the description of the post
+     *
+     * @param string $postId
+     * @return string
+     */
+    public static function get_description($postId)
+    {
+        // Getting the description from the post excerpt
+        $description = get_post_field('post_excerpt', $postId);
+
+        // Yoast SEO plugin.
+        if (empty($description) || !is_string($description)) {
+            $description = get_post_meta($postId, '_yoast_wpseo_metadesc', true);
+        }
+
+        // Rank Math SEO plugin.
+        if (empty($description) || !is_string($description)) {
+            $description = get_post_meta($postId, 'rank_math_description', true);
+        }
+        
+        // The SEO Framework
+        if (empty($description) || !is_string($description)) {
+            $description = get_post_meta($postId, '_genesis_description', true);
+        }
+
+        // SEOPress
+        if (empty($description) || !is_string($description)) {
+            $description = get_post_meta($postId, '_seopress_titles_desc', true);
+        }
+        
+        // All In One SEO
+        if (empty($description) || !is_string($description)) {
+            $description = get_post_meta($postId, '_aioseo_og_description', true);
+        }
+
+        if (empty($description) || !is_string($description)) {
+            // Getting the post content
+            $html = apply_filters('the_content', strip_tags(get_post_field('post_content', $postId)));
+            if (empty($html)) {
+                return $html;
+            }
+            $dom = new \DOMDocument();
+            $dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+            $dom->preserveWhiteSpace = false;
+            $description = $dom->textContent;
+        }
+
+        // Limiting the description to 14 words
+        $description = explode(' ', $description);
+        $description = implode(' ', array_slice($description, 0, 14));
+
+        return $description;
+
     }
 }

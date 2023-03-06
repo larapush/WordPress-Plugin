@@ -160,9 +160,14 @@ class Unlimited_Push_Notifications_By_Larapush {
 		$plugin_admin = new Unlimited_Push_Notifications_By_Larapush_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		// Add Menu Page and Submenu Page
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_menu_pages' );
 		$this->loader->add_action( 'admin_post_larapush_connect', $plugin_admin, 'larapush_connect' );
 		$this->loader->add_action( 'admin_post_larapush_code_integration', $plugin_admin, 'code_integration' );
+		$this->loader->add_action( 'transition_post_status', $plugin_admin, 'post_page_status_changed', 20, 3 );
+		$this->loader->add_action( 'admin_notices', $plugin_admin, 'admin_notices' );
+		$this->loader->add_filter( 'post_row_actions', $plugin_admin, 'add_post_row_actions', 20, 2);
+		$this->loader->add_action( 'wp_ajax_larapush_send_notification', $plugin_admin, 'larapush_send_notification' );
 	}
 
 	/**
@@ -176,6 +181,7 @@ class Unlimited_Push_Notifications_By_Larapush {
 
 		$plugin_public = new Unlimited_Push_Notifications_By_Larapush_Public( $this->get_plugin_name(), $this->get_version() );
 
+		// Add Custom Header Code
 		$this->loader->add_action( 'wp_head', $plugin_public, 'my_custom_header_code' );
 	}
 
