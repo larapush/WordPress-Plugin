@@ -28,7 +28,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
      * 
      * @since 1.0.0
      */
-    public static function responseError($message)
+    public static function responseErrorAndRedirect($message)
     {
         set_transient('larapush_error', $message, 30);
         wp_redirect( admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings') );
@@ -40,7 +40,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
      * 
      * @since 1.0.0
      */
-    public static function responseSuccess($message)
+    public static function responseSuccessAndRedirect($message)
     {
         set_transient('larapush_success', $message, 30);
         wp_redirect( admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings') );
@@ -126,21 +126,15 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             ]),
         ]);
 
-		try{
-			if($response['response']['code'] != 200 or is_wp_error($response)){
-				$body = json_decode($response['body']);
-				$error = $body->message;
-                
-                add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . $error, 'error' );
+		try{		
+            $body = json_decode($response['body']);
+            if(!$body->success){
+                add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: '. $body->message, 'error' );
                 return false;
-			}else{
-				$body = json_decode($response['body']);
-				if(!$body->success){
-                    add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
-                    return false;
-				}
-                return true;
-			}
+            }
+
+            return true;
+        
 		}catch(\Throwable $e){
 			add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
             return false;
@@ -174,24 +168,17 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             ]),
         ]);
 
-		try{
-			if($response['response']['code'] != 200 or is_wp_error($response)){
-				$body = json_decode($response['body']);
-				$error = $body->message;
-                add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . $error, 'error' );
+		try{		
+            $body = json_decode($response['body']);
+            if(!$body->success){
+                add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: '. $body->message, 'error' );
                 return false;
-			}else{
-				$body = json_decode($response['body']);
-				if(!$body->success){
-                    add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
-                    return false;
-				}
+            }
 
-                update_option('unlimited_push_notifications_by_larapush_panel_domains', $body->data->domains);
-                update_option('unlimited_push_notifications_by_larapush_panel_migrated_domains', $body->data->migrated_domains);
+            update_option('unlimited_push_notifications_by_larapush_panel_domains', $body->data->domains);
+            update_option('unlimited_push_notifications_by_larapush_panel_migrated_domains', $body->data->migrated_domains);
 
-                return true;
-			}
+            return true;
 		}catch(\Throwable $e){
 			add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
             return false;
@@ -212,6 +199,9 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             return false;
         }
 
+        // Get site url
+        $site_url = str_replace(['http://', 'https://'], '', get_site_url());
+
         // Authenticate to LaraPush Panel
 		$panel_url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::assambleUrl($url, $url_path);
         $response = wp_remote_post($panel_url, [
@@ -221,66 +211,63 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             ],
             'body' => json_encode([
                 // TODO: Change this to your domain
-                'domain' => 'test.larapush.com',
+                'domain' => $site_url,
                 'email' => $email,
                 'password' => $password,
             ]),
         ]);
 
 		try{
-			if($response['response']['code'] != 200 or is_wp_error($response)){
-                $body = json_decode($response['body']);
-				$error = $body->message;
-                Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseError('Error: ' . $error);
+			
+            $body = json_decode($response['body']);
+            if(!$body->success){
+                add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . $body->message, 'error' );
                 return false;
-			}else{
-                $body = json_decode($response['body']);
-				if(!$body->success){
-                    Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseError('Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.');
-                    return false;
-				}
+            }
                 
-                // check if root of the website is writable, if yes, write the js file
-                if (is_writable(ABSPATH)) {
-                    // Writing javascript file
-                    $old_files_name = get_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', []);
-                    // Delete old files
-                    foreach ($old_files_name as $old_file_name) {
-                        $old_file = ABSPATH . $old_file_name;
-                        if (file_exists($old_file)) {
-                            unlink($old_file);
-                        }
+            // check if root of the website is writable, if yes, write the js file
+            if (is_writable(ABSPATH)) {
+                // Writing javascript file
+                $old_files_name = get_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', []);
+                // Delete old files
+                foreach ($old_files_name as $old_file_name) {
+                    $old_file = ABSPATH . $old_file_name;
+                    if (file_exists($old_file)) {
+                        unlink($old_file);
                     }
-
-                    // Save new file names
-                    $file_names = [];
-                    $file_names[] = $body->data->integration->js_filename_for_site;
-                    $file_names[] = $body->data->integration->sw_firebase_filename;
-                    update_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', $file_names);
-
-                    $js_filename = $body->data->integration->js_filename_for_site;
-                    $js_code = $body->data->integration->js_code;
-                    $js_file = ABSPATH . $js_filename;
-                    file_put_contents($js_file, $js_code);
-
-                    // Writing service worker file
-                    $sw_filename = $body->data->integration->sw_firebase_filename;
-                    $sw_code = $body->data->integration->sw_firebase_code;
-                    $sw_file = ABSPATH . $sw_filename;
-                    file_put_contents($sw_file, $sw_code);
-                    
-                    $code_to_be_added_in_header = $body->data->integration->code_to_be_added_in_header;
-                    update_option('unlimited_push_notifications_by_larapush_code_to_be_added_in_header', $code_to_be_added_in_header);
                 }
 
-                update_option('unlimited_push_notifications_by_larapush_panel_integration_done', true);
-                return true;
-			}
+                // Save new file names
+                $file_names = [];
+                $file_names[] = $body->data->integration->js_filename_for_site;
+                $file_names[] = $body->data->integration->sw_firebase_filename;
+                update_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', $file_names);
+
+                $js_filename = $body->data->integration->js_filename_for_site;
+                $js_code = $body->data->integration->js_code;
+                $js_file = ABSPATH . $js_filename;
+                file_put_contents($js_file, $js_code);
+
+                // Writing service worker file
+                $sw_filename = $body->data->integration->sw_firebase_filename;
+                $sw_code = $body->data->integration->sw_firebase_code;
+                $sw_file = ABSPATH . $sw_filename;
+                file_put_contents($sw_file, $sw_code);
+                
+                $code_to_be_added_in_header = $body->data->integration->code_to_be_added_in_header;
+                update_option('unlimited_push_notifications_by_larapush_code_to_be_added_in_header', $code_to_be_added_in_header);
+            }else{
+                add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . ABSPATH . ' is not writable, please make it writable.', 'error' );
+                return false;
+            }
+
+            return true;
 		}catch(\Throwable $e){
-            Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseError('Error: '.$e->getMessage());
+            add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . $e->getMessage(), 'error' );
             return false;
 		}
 
+        update_option('unlimited_push_notifications_by_larapush_panel_integration_tried', true);
         return false;
     }
 
@@ -308,13 +295,14 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             'body' => json_encode([
                 'email' => $email,
                 'password' => $password,
-                'domains' => get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', []),
+                'domains' => get_option('unlimited_push_notifications_by_larapush_panel_domains_selected', []),
                 'migrated_domains' => get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', []),
                 'title' => $meta['title'],
                 'message' => $meta['body'],
                 'icon' => $meta['icon'],
                 'image' => $meta['image'],
-                'url' => $meta['url']
+                'url' => $meta['url'],
+                'schedule_now' => 1,
             ]),
         ]);
 

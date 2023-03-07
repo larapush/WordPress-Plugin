@@ -35,9 +35,13 @@ class Unlimited_Push_Notifications_By_Larapush_Deactivator {
 		delete_transient('larapush_success');
 
 		// Delete Files
-		$files_used = [
-			''
-		];
+		$files_used = get_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', []);
+		foreach($files_used as $file) {
+			$filename = ABSPATH . $file;
+			if (file_exists($filename)) {
+				unlink($filename);
+			}
+		}
 
 		// Delete Options
 		$options_used = [
@@ -45,11 +49,10 @@ class Unlimited_Push_Notifications_By_Larapush_Deactivator {
 			'unlimited_push_notifications_by_larapush_panel_url',
 			'unlimited_push_notifications_by_larapush_panel_email',
 			'unlimited_push_notifications_by_larapush_panel_password',
-			'unlimited_push_notifications_by_larapush_license_key',
 			'unlimited_push_notifications_by_larapush_js_filenames_for_site',
 			'unlimited_push_notifications_by_larapush_push_on_publish',
 			'unlimited_push_notifications_by_larapush_enable_push_notifications',
-			'unlimited_push_notifications_by_larapush_panel_integration_done',
+			'unlimited_push_notifications_by_larapush_panel_integration_tried',
 			'unlimited_push_notifications_by_larapush_panel_domains',
 			'unlimited_push_notifications_by_larapush_panel_domains_selected',
 			'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',

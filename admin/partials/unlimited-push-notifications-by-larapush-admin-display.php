@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    die;
+}
 
 /**
  * Provide a admin area view for the plugin
@@ -14,7 +17,11 @@
 
 $url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_url'));$email = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_email'));
 ?>
-
+<style>
+    .notice{
+        display: none;
+    }
+</style>
 <!-- Center the div and add a buton to open panel in new tab -->
 <div class="wrap" style="text-align: center; margin-top: 50px;">
     <img src="<?php echo plugin_dir_url( __FILE__ ) . '../images/larapush-logo.svg'; ?>" alt="Larapush Logo" style="width: 200px; height: auto;">
