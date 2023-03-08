@@ -108,11 +108,10 @@ if($connection == true and get_option('unlimited_push_notifications_by_larapush_
                         $amp_code_location = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
                     ?>
                         <select name="unlimited_push_notifications_by_larapush_amp_code_location[]" multiple="multiple" style="width: 100%; height: 100px;">
-                            <option value="header" <?php selected( true, in_array('header', $amp_code_location) ); ?>>Header</option>
-                            <option value="footer" <?php selected( true, in_array('footer', $amp_code_location) ); ?>>Footer</option>
-                            <option value="before_post" <?php selected( true, in_array('before_post', $amp_code_location) ); ?>>Before Post</option>
-                            <option value="after_post" <?php selected( true, in_array('after_post', $amp_code_location) ); ?>>After Post</option>
-                            <option value="main_page" <?php selected( true, in_array('main_page', $amp_code_location) ); ?>>Main Page</option>
+                            <option value="header" <?php selected( true, in_array('header', $amp_code_location) ); ?>>Header (All Pages)</option>
+                            <option value="footer" <?php selected( true, in_array('footer', $amp_code_location) ); ?>>Footer (All Pages)</option>
+                            <option value="before_post" <?php selected( true, in_array('before_post', $amp_code_location) ); ?>>Before Post (Post Pages)</option>
+                            <option value="after_post" <?php selected( true, in_array('after_post', $amp_code_location) ); ?>>After Post (Post Pages)</option>
                         </select>
                         <p class="description">Use shift to select multiple locations</p>
                     </td>

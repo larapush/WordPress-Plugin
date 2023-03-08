@@ -262,13 +262,13 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 
                 // Writing helper frame file
                 $helper_frame_filename = $body->data->integration->ampIntegrationCode->helper_frame_filename;
-                $helper_frame_code = $body->data->integration->ampIntegrationCode->helper_frame;
+                $helper_frame = $body->data->integration->ampIntegrationCode->helper_frame;
                 $helper_frame_file = ABSPATH . $helper_frame_filename;
                 file_put_contents($helper_frame_file, $helper_frame);
 
                 // Writing permission dialog file
                 $permission_dialog_filename = $body->data->integration->ampIntegrationCode->permission_dialog_filename;
-                $permission_dialog_code = $body->data->integration->ampIntegrationCode->permission_dialog;
+                $permission_dialog = $body->data->integration->ampIntegrationCode->permission_dialog;
                 $permission_dialog_file = ABSPATH . $permission_dialog_filename;
                 file_put_contents($permission_dialog_file, $permission_dialog);
                 
