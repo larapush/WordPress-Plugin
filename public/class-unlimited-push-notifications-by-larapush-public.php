@@ -1,16 +1,10 @@
 <?php
 
 /**
- * The public-facing functionality of the plugin.
- *
+ * 
  * @link       https://larapush.com
  * @since      1.0.0
- *
- * @package    Unlimited_Push_Notifications_By_Larapush
- * @subpackage Unlimited_Push_Notifications_By_Larapush/public
- */
-
-/**
+ * 
  * The public-facing functionality of the plugin.
  *
  * Defines the plugin name, version, and two examples hooks for how to
@@ -54,10 +48,13 @@ class Unlimited_Push_Notifications_By_Larapush_Public {
 
 	}
 
+	/**
+	 * Adds the code to header
+	 * 
+	 * @since 1.0.0
+	 */
 	public function wp_head() {
-		// var_dump(!(function_exists('is_amp_endpoint') && is_amp_endpoint()));
-		// die();
-		# When AMP is not Enabled
+		# When AMP is not Enabled, add website code else add AMP code
 		if (!(function_exists('is_amp_endpoint') && is_amp_endpoint())) {
 			
 			# Check if token collection is enabled
@@ -70,11 +67,15 @@ class Unlimited_Push_Notifications_By_Larapush_Public {
 				}
 			}
 		}else{
-			# When AMP is enabled
 			$this->amp_post_template_head();	
 		}
 	}
 
+	/**
+	 * Adds the amp code to header
+	 * 
+	 * @since 1.0.0
+	 */
 	public function amp_post_template_head() {
 		$amp_enabled = get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', false);
 		$locations = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
@@ -94,10 +95,14 @@ class Unlimited_Push_Notifications_By_Larapush_Public {
 				echo $this->get_widget_code();
 	
 			}
-		
 		}
 	}
 
+	/**
+	 * Adds the amp code to footer
+	 * 
+	 * @since 1.0.0
+	 */
 	public function amp_post_template_footer() {
 		$amp_enabled = get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', false);
 		$locations = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
@@ -111,9 +116,7 @@ class Unlimited_Push_Notifications_By_Larapush_Public {
 				
 				# Add the code to footer
 				echo $this->get_widget_code();
-	
 			}
-		
 		}
 	}
 
@@ -151,7 +154,11 @@ class Unlimited_Push_Notifications_By_Larapush_Public {
 		return $content;
 	}
 
-
+	/**
+	 * Returns the widget code to be added
+	 * 
+	 * @since 1.0.0
+	 */
 	private function get_widget_code() {
 		$code = get_option('unlimited_push_notifications_by_larapush_codes', []);
 		if(array_key_exists('amp_code_widget', $code)){

@@ -2,16 +2,9 @@
 
 /**
  * The admin-specific functionality of the plugin.
- *
+ * 
  * @link       https://larapush.com
  * @since      1.0.0
- *
- * @package    Unlimited_Push_Notifications_By_Larapush
- * @subpackage Unlimited_Push_Notifications_By_Larapush/admin
- */
-
-/**
- * The admin-specific functionality of the plugin.
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
@@ -95,21 +88,36 @@ class Unlimited_Push_Notifications_By_Larapush_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Unlimited_Push_Notifications_By_Larapush_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Unlimited_Push_Notifications_By_Larapush_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/unlimited-push-notifications-by-larapush-admin.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	
+	/**
+	 * Admin Notices Here
+	 * 
+	 * @since 1.0.0
+	 */
+	public function admin_notices() {
+		$error_msg = get_transient('larapush_error');
+		if ( $error_msg ) {
+			echo '<div class="notice notice-error is-dismissible"><p><strong>' . $error_msg . '</strong></p></div>';
+			delete_transient('larapush_error');
+		}
+		$success_msg = get_transient('larapush_success');
+		if ( $success_msg ) {
+			echo '<div class="notice notice-success is-dismissible"><p><strong>' . $success_msg . '</strong></p></div>';
+			delete_transient('larapush_success');
+		}
+
+		$setup_done = get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false);
+		if ( ! $setup_done and ! isset($_GET['page']) and $_GET['page'] != 'unlimited-push-notifications-by-larapush-settings') {
+			?>
+			<div class="notice notice-warning is-dismissible">
+				<p><strong>Larapush</strong> is not setup yet. <a href="<?php echo admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings'); ?>">Click here</a> to setup.</p>
+			</div>
+			<?php
+		}
 	}
 
 	/**
@@ -118,6 +126,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin {
 	 * @since 1.0.0
 	 */
 	public function render_menu_page() {
+		# Check if Larapush is connected, if not redirect to settings page using javascript
 		$connection = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::checkConnection();
 		if($connection == false){
 			$redirect_url = admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings');
@@ -140,7 +149,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin {
 	}
 
 	/**
-	 * Connect to LaraPush Panel.
+	 * Connect to LaraPush Panel, save options and redirect back to settings page.
 	 * 
 	 * @since 1.0.0
 	 */
@@ -187,7 +196,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin {
 	}
 
 	/**
-	 * Code Integration
+	 * Automatically adds the files and code to the website
 	 * 
 	 * @since 1.0.0
 	 */
@@ -197,8 +206,10 @@ class Unlimited_Push_Notifications_By_Larapush_Admin {
 			Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect('Invalid nonce.');
 		}
 
+		# Integrating code here
 		$integration_done = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::codeIntegration();
 
+		# If Integration is successful, redirect to settings page else show error
 		if ( $integration_done == true ) {
 			Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseSuccessAndRedirect('Code integration done successfully.');
 		} else {
@@ -220,14 +231,14 @@ class Unlimited_Push_Notifications_By_Larapush_Admin {
 			return;
 		}
 
-		// Checking for page updates
+		// If post status is publish and push on publish is enabled then send notification
 		if($post->post_type == 'post' and $new_status == 'publish' and get_option('unlimited_push_notifications_by_larapush_push_on_publish', false)) {
 			$notification = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::send_notification($post->ID);
 		}
 	}
 
 	/**
-	 * Add Post Row Actions
+	 * Add Post Row Actions to the post list
 	 * 
 	 * @since 1.0.0
 	 */
@@ -239,34 +250,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin {
 	}
 
 	/**
-	 * Admin Notices Here
-	 * 
-	 * @since 1.0.0
-	 */
-	public function admin_notices() {
-		$error_msg = get_transient('larapush_error');
-		if ( $error_msg ) {
-			echo '<div class="notice notice-error is-dismissible"><p><strong>' . $error_msg . '</strong></p></div>';
-			delete_transient('larapush_error');
-		}
-		$success_msg = get_transient('larapush_success');
-		if ( $success_msg ) {
-			echo '<div class="notice notice-success is-dismissible"><p><strong>' . $success_msg . '</strong></p></div>';
-			delete_transient('larapush_success');
-		}
-
-		$setup_done = get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false);
-		if ( ! $setup_done and ! isset($_GET['page']) and $_GET['page'] != 'unlimited-push-notifications-by-larapush-settings') {
-			?>
-			<div class="notice notice-warning is-dismissible">
-				<p><strong>Larapush</strong> is not setup yet. <a href="<?php echo admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings'); ?>">Click here</a> to setup.</p>
-			</div>
-			<?php
-		}
-	}
-
-	/**
-	 * Send Notification on Click
+	 * Send Notification on Row Action Click
 	 * 
 	 * @since 1.0.0
 	 */

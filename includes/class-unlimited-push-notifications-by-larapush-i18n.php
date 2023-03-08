@@ -1,20 +1,9 @@
 <?php
-
 /**
- * Define the internationalization functionality
- *
- * Loads and defines the internationalization files for this plugin
- * so that it is ready for translation.
+ * Define the internationalization functionality.
  *
  * @link       https://larapush.com
  * @since      1.0.0
- *
- * @package    Unlimited_Push_Notifications_By_Larapush
- * @subpackage Unlimited_Push_Notifications_By_Larapush/includes
- */
-
-/**
- * Define the internationalization functionality.
  *
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.

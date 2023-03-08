@@ -1,13 +1,6 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
  * @link              https://larapush.com
  * @since             1.0.0
  * @package           Unlimited_Push_Notifications_By_Larapush
@@ -15,7 +8,7 @@
  * @wordpress-plugin
  * Plugin Name:       Unlimited Push Notifications by LaraPush
  * Plugin URI:        https://larapush.com
- * Description:       This is a premium add-on for larapush pro panel. Users can configure larapush, send push notifications on publish or directly from wordpress.
+ * Description:       Unlimited Push Notifications by LaraPush simplifies push notifications on WordPress with unlimited capabilities and AMP support.
  * Version:           1.0.0
  * Author:            Satyam Gupta
  * Author URI:        https://larapush.com

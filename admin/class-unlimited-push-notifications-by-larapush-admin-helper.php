@@ -13,18 +13,7 @@
 class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 {
     /**
-     * Convert to camel case.
-     * 
-     * @since 1.0.0
-     */
-    public static function convertToCamelCase($string)
-    {
-        $string = str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
-        return lcfirst($string);
-    }
-
-    /**
-     * Returns error response.
+     * Saves the error and redirects to the settings page.
      * 
      * @since 1.0.0
      */
@@ -36,7 +25,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
     }
 
     /**
-     * Returns success response.
+     * Saves the success and redirects to the settings page.
      * 
      * @since 1.0.0
      */
@@ -61,6 +50,11 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
         return $panel_url . $url_path;
     }
 
+    /**
+     * Encodes the Important Information to be saved in the database.
+     * 
+     * @since 1.0.0
+     */
     public static function encode($msg)
     {
         // encode to base64
@@ -74,25 +68,34 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             return ord($char)+415;
         }, $msg);
 
-        return implode('-', $msg);
+        // join with - saparator
+        $msg = implode('-', $msg);
+
+        return $msg;
     }
 
+    /**
+     * Decodes the Important Information to be saved in the database.
+     * 
+     * @since 1.0.0
+     */
     public static function decode($msg)
     {
+        // if no - found, return the same string
         if (strpos($msg, '-') === false) {
             return $msg;
         }
         
-        // split into chunks
+        // splits with - saparator
         $msg = explode('-', $msg);
 
-        // convert to ascii
+        // convert from ascii
         $msg = array_map(function($char) {
             return chr($char-415);
         }, $msg);
 
 
-        // join
+        // join all
         $msg = implode('', $msg);
 
         // decode from base64
@@ -101,14 +104,21 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
         return $msg;
     }
 
+    /**
+     * Checks if the connection is valid.
+     * 
+     * @since 1.0.0
+     */
     public static function checkConnection(){
+        // get the url and path
         $url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_url', ''));
         $url_path = '/api/checkAuth';
         
+        // get the email and password
         $email = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_email', ''));
         $password = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_password', ''));
 
-        // check if all 3 fields are filled
+        // check if all 3 fields exist
         if (empty($url) || empty($email) || empty($password)) {
             return false;
         }
@@ -134,7 +144,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             }
 
             return true;
-        
+
 		}catch(\Throwable $e){
 			add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: LaraPush v3 Pro Panel not found, Make sure you are using LaraPush v3 Pro Panel.', 'error' );
             return false;
@@ -143,14 +153,21 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
         return false;
     }
 
+    /**
+     * Gets Campaign Filters from LaraPush Panel to select domains to send push notifications to.
+     * 
+     * @since 1.0.0
+     */
     public static function getCampaignFilter(){
+        // get the url and path
         $url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_url', ''));
         $url_path = '/api/getCampaignFilter';
         
+        // get the email and password
         $email = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_email', ''));
         $password = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_password', ''));
 
-        // check if all 3 fields are filled
+        // check if all 3 fields exists
         if (empty($url) || empty($email) || empty($password)) {
             return false;
         }
@@ -188,13 +205,15 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
     }
 
     public static function codeIntegration(){
+        // get the url and path
         $url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_url', ''));
         $url_path = '/api/codeIntegration';
         
+        // get the email and password
         $email = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_email', ''));
         $password = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_password', ''));
 
-        // check if all 3 fields are filled
+        // check if all 3 fields exists
         if (empty($url) || empty($email) || empty($password)) {
             return false;
         }
@@ -218,9 +237,8 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
         ]);
 
 		try{
-			
+			// check if the response is valid
             $body = json_decode($response['body']);
-            
             if(!$body->success){
                 add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . $body->message, 'error' );
                 return false;
@@ -241,7 +259,6 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 
                 #Files Setup
                 $file_names = [];
-
                 $file_names[] = $body->data->integration->integrationCode->js_code_filename;
                 $file_names[] = $body->data->integration->integrationCode->sw_firebase_code_filename;
                 $file_names[] = $body->data->integration->ampIntegrationCode->helper_frame_filename;
@@ -272,10 +289,10 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 $permission_dialog_file = ABSPATH . $permission_dialog_filename;
                 file_put_contents($permission_dialog_file, $permission_dialog);
                 
+                // Writing codes to database
                 $code_to_be_added_in_header = $body->data->integration->integrationCode->code_to_be_added_in_header;
                 $amp_code_to_be_added_in_header = $body->data->integration->ampIntegrationCode->header;
                 $amp_code_widget = $body->data->integration->ampIntegrationCode->widget;
-
                 $codes = [
                     'code_to_be_added_in_header' => $code_to_be_added_in_header,
                     'amp_code_to_be_added_in_header' => $amp_code_to_be_added_in_header,
@@ -298,16 +315,27 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
         return false;
     }
 
+    /**
+     * Send notification to LaraPush Panel
+     * 
+     * @param int $postId
+     * @return bool
+     * 
+     * @since 1.0.0
+     */
     public static function send_notification($postId){
+        // get post meta
         $meta = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::get_meta($postId);
 
+        // get url and path
         $url = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_url', ''));
         $url_path = '/api/createCampaign';
         
+        // get email and password
         $email = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_email', ''));
         $password = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_password', ''));
 
-        // check if all 3 fields are filled
+        // check if all 3 fields exists
         if (empty($url) || empty($email) || empty($password)) {
             return false;
         }

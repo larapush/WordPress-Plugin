@@ -1,20 +1,9 @@
 <?php
-
 /**
- * The file that defines the core plugin class
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
+ * The core plugin class.
  *
  * @link       https://larapush.com
  * @since      1.0.0
- *
- * @package    Unlimited_Push_Notifications_By_Larapush
- * @subpackage Unlimited_Push_Notifications_By_Larapush/includes
- */
-
-/**
- * The core plugin class.
  *
  * This is used to define internationalization, admin-specific hooks, and
  * public-facing site hooks.
