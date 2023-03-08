@@ -1,0 +1,18 @@
+{
+  "name": "unlimited-push-notifications-by-larapush",
+  "version": "1.0.0",
+  "description": "=== Plugin Name === Unlimited Push Notifications by LaraPush",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier",
+    "format-all": "npm run prettier -- admin --write && npm run prettier -- assets --write && npm run prettier -- includes --write && npm run prettier -- languages --write && npm run prettier -- public --write && npm run prettier -- unlimited-push-notifications-by-larapush.php --write"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.19.3",
+    "prettier": "^2.8.4"
+  }
+}
