@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettier": "prettier",
-    "format-all": "npm run prettier -- admin --write && npm run prettier -- assets --write && npm run prettier -- includes --write && npm run prettier -- languages --write && npm run prettier -- public --write && npm run prettier -- unlimited-push-notifications-by-larapush.php --write"
+    "format-all": "npm run prettier -- admin --write && npm run prettier -- includes --write && npm run prettier -- public --write && npm run prettier -- unlimited-push-notifications-by-larapush.php --write"
   },
   "keywords": [],
   "author": "",

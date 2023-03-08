@@ -19,8 +19,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if (!defined('WPINC')) {
+    die();
 }
 
 /**
@@ -28,34 +28,36 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'UNLIMITED_PUSH_NOTIFICATIONS_BY_LARAPUSH_VERSION', '1.0.0' );
+define('UNLIMITED_PUSH_NOTIFICATIONS_BY_LARAPUSH_VERSION', '1.0.0');
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-unlimited-push-notifications-by-larapush-activator.php
  */
-function activate_unlimited_push_notifications_by_larapush() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-unlimited-push-notifications-by-larapush-activator.php';
-	Unlimited_Push_Notifications_By_Larapush_Activator::activate();
+function activate_unlimited_push_notifications_by_larapush()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-unlimited-push-notifications-by-larapush-activator.php';
+    Unlimited_Push_Notifications_By_Larapush_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-unlimited-push-notifications-by-larapush-deactivator.php
  */
-function deactivate_unlimited_push_notifications_by_larapush() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-unlimited-push-notifications-by-larapush-deactivator.php';
-	Unlimited_Push_Notifications_By_Larapush_Deactivator::deactivate();
+function deactivate_unlimited_push_notifications_by_larapush()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-unlimited-push-notifications-by-larapush-deactivator.php';
+    Unlimited_Push_Notifications_By_Larapush_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_unlimited_push_notifications_by_larapush' );
-register_deactivation_hook( __FILE__, 'deactivate_unlimited_push_notifications_by_larapush' );
+register_activation_hook(__FILE__, 'activate_unlimited_push_notifications_by_larapush');
+register_deactivation_hook(__FILE__, 'deactivate_unlimited_push_notifications_by_larapush');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-unlimited-push-notifications-by-larapush.php';
+require plugin_dir_path(__FILE__) . 'includes/class-unlimited-push-notifications-by-larapush.php';
 
 /**
  * Begins execution of the plugin.
@@ -66,10 +68,9 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-unlimited-push-notificatio
  *
  * @since    1.0.0
  */
-function run_unlimited_push_notifications_by_larapush() {
-
-	$plugin = new Unlimited_Push_Notifications_By_Larapush();
-	$plugin->run();
-
+function run_unlimited_push_notifications_by_larapush()
+{
+    $plugin = new Unlimited_Push_Notifications_By_Larapush();
+    $plugin->run();
 }
 run_unlimited_push_notifications_by_larapush();
