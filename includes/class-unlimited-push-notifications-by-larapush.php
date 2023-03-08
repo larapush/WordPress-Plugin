@@ -181,8 +181,14 @@ class Unlimited_Push_Notifications_By_Larapush {
 
 		$plugin_public = new Unlimited_Push_Notifications_By_Larapush_Public( $this->get_plugin_name(), $this->get_version() );
 
-		// Add Custom Header Code
-		$this->loader->add_action( 'wp_head', $plugin_public, 'my_custom_header_code' );
+		# Web Codes
+		$this->loader->add_action( 'wp_head', $plugin_public, 'wp_head' );
+
+		# AMP Locations
+		$this->loader->add_action( 'amp_post_template_head', $plugin_public, 'amp_post_template_head' );
+		$this->loader->add_action( 'amp_post_template_body_open', $plugin_public, 'amp_post_template_body_open' );
+		$this->loader->add_action( 'amp_post_template_footer', $plugin_public, 'amp_post_template_footer' );
+		$this->loader->add_filter( 'the_content', $plugin_public, 'the_content', 20, 1);
 	}
 
 	/**

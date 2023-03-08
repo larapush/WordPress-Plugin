@@ -220,6 +220,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 		try{
 			
             $body = json_decode($response['body']);
+            
             if(!$body->success){
                 add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . $body->message, 'error' );
                 return false;
@@ -227,6 +228,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 
             // check if root of the website is writable, if yes, write the js file
             if (is_writable(ABSPATH)) {
+            
                 // Writing javascript file
                 $old_files_name = get_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', []);
                 // Delete old files
@@ -237,25 +239,50 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                     }
                 }
 
-                // Save new file names
+                #Files Setup
                 $file_names = [];
-                $file_names[] = $body->data->integration->js_filename_for_site;
-                $file_names[] = $body->data->integration->sw_firebase_filename;
+
+                $file_names[] = $body->data->integration->integrationCode->js_code_filename;
+                $file_names[] = $body->data->integration->integrationCode->sw_firebase_code_filename;
+                $file_names[] = $body->data->integration->ampIntegrationCode->helper_frame_filename;
+                $file_names[] = $body->data->integration->ampIntegrationCode->permission_dialog_filename;
                 update_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', $file_names);
 
-                $js_filename = $body->data->integration->js_filename_for_site;
-                $js_code = $body->data->integration->js_code;
+                // Writing javascript files
+                $js_filename = $body->data->integration->integrationCode->js_code_filename;
+                $js_code = $body->data->integration->integrationCode->js_code;
                 $js_file = ABSPATH . $js_filename;
                 file_put_contents($js_file, $js_code);
 
                 // Writing service worker file
-                $sw_filename = $body->data->integration->sw_firebase_filename;
-                $sw_code = $body->data->integration->sw_firebase_code;
+                $sw_filename = $body->data->integration->integrationCode->sw_firebase_code_filename;
+                $sw_code = $body->data->integration->integrationCode->sw_firebase_code;
                 $sw_file = ABSPATH . $sw_filename;
                 file_put_contents($sw_file, $sw_code);
+
+                // Writing helper frame file
+                $helper_frame_filename = $body->data->integration->ampIntegrationCode->helper_frame_filename;
+                $helper_frame_code = $body->data->integration->ampIntegrationCode->helper_frame;
+                $helper_frame_file = ABSPATH . $helper_frame_filename;
+                file_put_contents($helper_frame_file, $helper_frame);
+
+                // Writing permission dialog file
+                $permission_dialog_filename = $body->data->integration->ampIntegrationCode->permission_dialog_filename;
+                $permission_dialog_code = $body->data->integration->ampIntegrationCode->permission_dialog;
+                $permission_dialog_file = ABSPATH . $permission_dialog_filename;
+                file_put_contents($permission_dialog_file, $permission_dialog);
                 
-                $code_to_be_added_in_header = $body->data->integration->code_to_be_added_in_header;
-                update_option('unlimited_push_notifications_by_larapush_code_to_be_added_in_header', $code_to_be_added_in_header);
+                $code_to_be_added_in_header = $body->data->integration->integrationCode->code_to_be_added_in_header;
+                $amp_code_to_be_added_in_header = $body->data->integration->ampIntegrationCode->header;
+                $amp_code_widget = $body->data->integration->ampIntegrationCode->widget;
+
+                $codes = [
+                    'code_to_be_added_in_header' => $code_to_be_added_in_header,
+                    'amp_code_to_be_added_in_header' => $amp_code_to_be_added_in_header,
+                    'amp_code_widget' => $amp_code_widget,
+                ];
+                
+                update_option('unlimited_push_notifications_by_larapush_codes', $codes);
             }else{
                 add_settings_error( 'unlimited-push-notifications-by-larapush-settings', 'my_connection_error', 'Error: ' . ABSPATH . ' is not writable, please make it writable.', 'error' );
                 return false;

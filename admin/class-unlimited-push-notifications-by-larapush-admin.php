@@ -178,6 +178,8 @@ class Unlimited_Push_Notifications_By_Larapush_Admin {
 		update_option('unlimited_push_notifications_by_larapush_push_on_publish', isset($_POST['unlimited_push_notifications_by_larapush_push_on_publish']) ? 1 : 0);
 		update_option('unlimited_push_notifications_by_larapush_panel_domains_selected', isset($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])? $_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'] : []);
 		update_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', isset($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])? $_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'] : []);
+		update_option('unlimited_push_notifications_by_larapush_add_code_for_amp', isset($_POST['unlimited_push_notifications_by_larapush_add_code_for_amp']) ? 1 : 0);
+		update_option('unlimited_push_notifications_by_larapush_amp_code_location', isset($_POST['unlimited_push_notifications_by_larapush_amp_code_location']) ? $_POST['unlimited_push_notifications_by_larapush_amp_code_location'] : []);
 
 		// Redirect to settings page
 		wp_redirect( admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings') );

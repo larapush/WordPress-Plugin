@@ -57,6 +57,7 @@ if($connection == true and get_option('unlimited_push_notifications_by_larapush_
                     <th scope="row">Panel Password</th>
                     <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?= Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_password')) ?>" /></td>
                 </tr>
+            
                 
                 <tr valign="top">
                     <th scope="row">Enable Subscriber Collection</th>
@@ -94,6 +95,26 @@ if($connection == true and get_option('unlimited_push_notifications_by_larapush_
                             <?php } ?>
                         </select>
                         <p class="description">Use shift to select multiple domains</p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Add Code for AMP</th>
+                    <td><input type="checkbox" name="unlimited_push_notifications_by_larapush_add_code_for_amp" value="1" <?php checked(1, get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', 0), true); ?> /></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Select AMP Code Location</th>
+                    <td>
+                    <?php
+                        $amp_code_location = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
+                    ?>
+                        <select name="unlimited_push_notifications_by_larapush_amp_code_location[]" multiple="multiple" style="width: 100%; height: 100px;">
+                            <option value="header" <?php selected( true, in_array('header', $amp_code_location) ); ?>>Header</option>
+                            <option value="footer" <?php selected( true, in_array('footer', $amp_code_location) ); ?>>Footer</option>
+                            <option value="before_post" <?php selected( true, in_array('before_post', $amp_code_location) ); ?>>Before Post</option>
+                            <option value="after_post" <?php selected( true, in_array('after_post', $amp_code_location) ); ?>>After Post</option>
+                            <option value="main_page" <?php selected( true, in_array('main_page', $amp_code_location) ); ?>>Main Page</option>
+                        </select>
+                        <p class="description">Use shift to select multiple locations</p>
                     </td>
                 </tr>
                 <?php } ?>

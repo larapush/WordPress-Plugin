@@ -45,7 +45,7 @@ class Unlimited_Push_Notifications_By_Larapush_Deactivator {
 
 		// Delete Options
 		$options_used = [
-			'unlimited_push_notifications_by_larapush_code_to_be_added_in_header',
+			'unlimited_push_notifications_by_larapush_codes',
 			'unlimited_push_notifications_by_larapush_panel_url',
 			'unlimited_push_notifications_by_larapush_panel_email',
 			'unlimited_push_notifications_by_larapush_panel_password',

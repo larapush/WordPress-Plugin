@@ -54,10 +54,116 @@ class Unlimited_Push_Notifications_By_Larapush_Public {
 
 	}
 
-	public function my_custom_header_code() {
+	public function wp_head() {
+		# Check if token collection is enabled
 		if(get_option('unlimited_push_notifications_by_larapush_enable_push_notifications', false)){
-			echo get_option('unlimited_push_notifications_by_larapush_code_to_be_added_in_header', '');
+
+			# Add the code to header
+			$code = get_option('unlimited_push_notifications_by_larapush_codes', []);
+				if(in_array('code_to_be_added_in_header', $code)){
+				echo $code['code_to_be_added_in_header'];
+			}
 		}
 	}
-	  
+
+	public function amp_post_template_head() {
+		$amp_enabled = get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', false);
+		$locations = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
+		$code = get_option('unlimited_push_notifications_by_larapush_codes', []);
+
+		# Check if amp is enabled
+		if($amp_enabled){
+
+			if(array_key_exists('amp_code_to_be_added_in_header', $code)){
+				echo $code['amp_code_to_be_added_in_header'];
+			}
+
+			# Check if user has selected header location
+			if(in_array('header', $locations)){
+				
+				# Add the code to header
+				if(array_key_exists('amp_code_widget', $code)){
+					echo $code['amp_code_widget'];
+				}
+	
+			}
+		
+		}
+	}
+
+	public function amp_post_template_body_open() {
+		$amp_enabled = get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', false);
+		$locations = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
+		$code = get_option('unlimited_push_notifications_by_larapush_codes', []);
+
+		# Check if amp is enabled
+		if($amp_enabled){
+
+			# Check if user has selected main_page location
+			if(in_array('main_page', $locations)){
+				
+				# Add the code to main_page
+				if(array_key_exists('amp_code_widget', $code)){
+					echo $code['amp_code_widget'];
+				}
+	
+			}
+		
+		}
+	}
+
+	public function amp_post_template_footer() {
+		$amp_enabled = get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', false);
+		$locations = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
+		$code = get_option('unlimited_push_notifications_by_larapush_codes', []);
+
+		# Check if amp is enabled
+		if($amp_enabled){
+
+			# Check if user has selected footer location
+			if(in_array('footer', $locations)){
+				
+				# Add the code to footer
+				if(array_key_exists('amp_code_widget', $code)){
+					echo $code['amp_code_widget'];
+				}
+	
+			}
+		
+		}
+	}
+
+	public function the_content($content) {
+		$amp_enabled = get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', false);
+		$locations = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
+		$code = get_option('unlimited_push_notifications_by_larapush_codes', []);
+
+		# Check if amp is enabled
+		if($amp_enabled){
+
+			# Check if user has selected before_post location
+			if(in_array('before_post', $locations)){
+				
+				# Add the code before post
+				if(array_key_exists('amp_code_widget', $code)){
+					$content = $code['amp_code_widget'] . $content;
+				}
+	
+			}
+
+			# Check if user has selected after_post location
+			if(in_array('after_post', $locations)){
+				# Add the code to after post
+				if(array_key_exists('amp_code_widget', $code)){
+					$content = $content . $code['amp_code_widget'];
+				}
+	
+			}
+		}
+
+		// var_dump($content);
+		// die();
+
+		return $content;
+	}
 }
