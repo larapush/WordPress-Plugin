@@ -1,10 +1,8 @@
 name: Zip and Publish
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,8 +15,8 @@ jobs:
       - name: Zip the files
         run: |
           cd ..
-          zip -r push-notifications-by-larapush.zip unlimited-push-notifications-by-larapush
-          mv push-notifications-by-larapush.zip WordPress-Plugin/
+          zip -r push-notifications-by-larapush.zip WordPress-Plugin
+          mv push-notifications-by-larapush.zip unlimited-push-notifications-by-larapush/
       - name: upload artifact
         uses: actions/upload-artifact@v2
         with:
