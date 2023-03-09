@@ -15,20 +15,16 @@ if (!defined('ABSPATH')) {
  * @subpackage Unlimited_Push_Notifications_By_Larapush/admin/partials
  */
 
-$connection = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::checkConnection();
-if ($connection) {
-    $campaignFilter = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::getCampaignFilter();
-} else {
-    $campaignFilter = false;
-}
-
-$integration_done = false;
-if (
-    $connection == true and
-    get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) == false
-) {
-    update_option('unlimited_push_notifications_by_larapush_panel_integration_tried', true);
-    $integration_done = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::codeIntegration();
+try{
+    $connection = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::checkConnection();
+    if ($connection) {
+        $campaignFilter = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::getCampaignFilter();
+        $integration_done = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::codeIntegration();
+    } else {
+        $campaignFilter = false;
+    }
+}catch(Exception $e){
+    $error = $e->getMessage();
 }
 ?>
 <div class="wrap">
@@ -36,6 +32,11 @@ if (
         <h1>Connect LaraPush</h1>
         <p>Send unlimited push notifications to your users directly from WordPress.</p>
         <?php settings_errors('unlimited-push-notifications-by-larapush-settings'); ?>
+        <?php if (isset($error)) { ?>
+            <div class="notice notice-error is-dismissible">
+                <p><?= $error ?></p>
+            </div>
+        <?php } ?>
         <?php if ($integration_done) { ?>
             <div class="notice notice-success is-dismissible">
                 <p>Integration done successfully.</p>
@@ -172,13 +173,7 @@ if (
                 <?php } ?>
                 <?php } ?>
             </table>
-            <button type="submit" class="button button-primary" id="larapush_connect">Connect Panel</button>
+            <button type="submit" class="button button-primary" id="larapush_connect">Save</button>
         </form>
-        <?php if ($connection == true) { ?>
-            <form method="post" action="<?= esc_url(admin_url('admin-post.php')) ?>" style="display: inline">
-                <input type="hidden" name="action" value="larapush_code_integration">			
-                <?php wp_nonce_field('larapush_code_integration'); ?>
-            <button type="submit" class="button button-secondary" id="larapush_code_integration">Integrate Code</button>
-        <?php } ?>
     </div>
 </div>

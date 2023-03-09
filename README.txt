@@ -61,4 +61,18 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 * Plugin released.
 
 == Arbitrary section ==
-TODO: Add Larapush Pitch Here
+
+Larapush is a powerful push notification service for websites, specially WordPress.
+It allows you to send notifications to your users in real-time, helping you keep them engaged and informed.
+
+What makes Larapush stand out from the competition is its value for money.
+Unlike other push notification services, Larapush doesn't charge a monthly fee that eats into your profits.
+Instead, you only pay once and enjoy the benefits forever.
+This makes Larapush the best value for money in the market.
+
+With Larapush, you can reach your users with targeted notifications based on their interests and actions.
+You can also personalize your notifications with custom branding and messaging, making them more engaging and memorable.
+
+Overall, if you're looking for a cost-effective and powerful push notification service, Larapush is a great option to consider.
+
+For More Information, Visit https://larapush.com
