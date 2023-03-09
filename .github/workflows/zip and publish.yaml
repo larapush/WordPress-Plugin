@@ -15,7 +15,7 @@ jobs:
       - name: Zip the files
         run: |
           cd ..
-          zip -r push-notifications-by-larapush.zip WordPress-Plugin
+          zip -r push-notifications-by-larapush.zip WordPress-Plugin/*
           mv push-notifications-by-larapush.zip WordPress-Plugin/
       - name: upload artifact
         uses: actions/upload-artifact@v2
