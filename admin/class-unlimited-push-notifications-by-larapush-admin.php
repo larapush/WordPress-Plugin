@@ -265,9 +265,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
 
         # If Integration is successful, redirect to settings page else show error
         if ($integration_done == true) {
-            Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseSuccessAndRedirect(
-                'Code integration done successfully.'
-            );
+            Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseSuccessAndRedirect('Settings saved.');
         } else {
             if (count(get_settings_errors('unlimited-push-notifications-by-larapush-settings'))) {
                 Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect(

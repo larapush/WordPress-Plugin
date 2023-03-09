@@ -427,7 +427,8 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 'icon' => $meta['icon'],
                 'image' => $meta['image'],
                 'url' => $meta['url'],
-                'schedule_now' => 1
+                'schedule_now' => 1,
+                'source' => 'Wordpress Plugin'
             ])
         ]);
 

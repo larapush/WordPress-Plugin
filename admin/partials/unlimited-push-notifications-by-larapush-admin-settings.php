@@ -15,15 +15,16 @@ if (!defined('ABSPATH')) {
  * @subpackage Unlimited_Push_Notifications_By_Larapush/admin/partials
  */
 
-try{
+try {
     $connection = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::checkConnection();
     if ($connection) {
         $campaignFilter = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::getCampaignFilter();
         $integration_done = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::codeIntegration();
+        update_option('unlimited_push_notifications_by_larapush_panel_integration_tried', true);
     } else {
         $campaignFilter = false;
     }
-}catch(Exception $e){
+} catch (Exception $e) {
     $error = $e->getMessage();
 }
 ?>
@@ -39,7 +40,7 @@ try{
         <?php } ?>
         <?php if ($integration_done) { ?>
             <div class="notice notice-success is-dismissible">
-                <p>Integration done successfully.</p>
+                <p>Settings saved.</p>
             </div>
         <?php } ?>
         <form method="post" action="<?= esc_url(admin_url('admin-post.php')) ?>" style="display: inline">
@@ -52,9 +53,14 @@ try{
                         <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?= Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
                             get_option('unlimited_push_notifications_by_larapush_panel_url')
                         ) ?>" />
-                        <p class="description"><?= $connection == true
-                            ? '<span class="dashicons dashicons-yes" style="color: green;"></span> Connected'
-                            : '<span class="dashicons dashicons-no" style="color: red;"></span> Not Connected' ?></p>
+                        <?php if (
+                            get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) ==
+                            true
+                        ) { ?>
+                            <p class="description"><?= $connection == true
+                                ? '<span class="dashicons dashicons-yes" style="color: green;"></span> Connected'
+                                : '<span class="dashicons dashicons-no" style="color: red;"></span> Not Connected' ?></p>
+                        <?php } ?>
                     
                 </tr>
                 <tr valign="top">
@@ -80,12 +86,13 @@ try{
                     ); ?> /></td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">Automatic Push On Publish</th>
+                    <th scope="row">Push On Publish</th>
                     <td><input type="checkbox" name="unlimited_push_notifications_by_larapush_push_on_publish" value="1" <?php checked(
                         1,
                         get_option('unlimited_push_notifications_by_larapush_push_on_publish', 0),
                         true
-                    ); ?> /></td>
+                    ); ?> />
+                    <p class="description">Send Notifications to all your subscribers on as soon as you publish a post.</p></td>
                 </tr>
                 <?php if ($campaignFilter == true) { ?>
                 <tr valign="top">
@@ -106,7 +113,7 @@ try{
                             <?php }
                             ?>
                         </select>
-                        <p class="description">Use shift to select multiple domains</p>
+                        <p class="description">Use ctrl to select multiple domains</p>
                     </td>
                 </tr>
                 <?php if (count(get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains', []))) { ?>
@@ -131,9 +138,10 @@ try{
                             <?php }
                             ?>
                         </select>
-                        <p class="description">Use shift to select multiple domains</p>
+                        <p class="description">Use ctrl to select multiple domains</p>
                     </td>
                 </tr>
+                <?php } ?>
                 <tr valign="top">
                     <th scope="row">Add Code for AMP</th>
                     <td><input type="checkbox" name="unlimited_push_notifications_by_larapush_add_code_for_amp" value="1" <?php checked(
@@ -143,7 +151,7 @@ try{
                     ); ?> /></td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">Select AMP Code Location</th>
+                    <th scope="row">AMP Subscribe Button Location</th>
                     <td>
                     <?php $amp_code_location = get_option(
                         'unlimited_push_notifications_by_larapush_amp_code_location',
@@ -167,13 +175,12 @@ try{
                                 in_array('after_post', $amp_code_location)
                             ); ?>>After Post (Post Pages)</option>
                         </select>
-                        <p class="description">Use shift to select multiple locations</p>
+                        <p class="description">Use ctrl to select multiple locations</p>
                     </td>
                 </tr>
                 <?php } ?>
-                <?php } ?>
             </table>
-            <button type="submit" class="button button-primary" id="larapush_connect">Save</button>
+            <button type="submit" class="button button-primary" id="larapush_connect">Save Changes</button>
         </form>
     </div>
 </div>
