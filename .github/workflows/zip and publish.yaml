@@ -1,0 +1,26 @@
+name: Zip and Publish
+
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Remove unwanted files
+        run: |
+          chmod 777 ./remove.sh
+          ./remove.sh
+      - name: Zip the files
+        run: |
+          cd ..
+          zip -r push-notifications-by-larapush.zip unlimited-push-notifications-by-larapush
+          mv push-notifications-by-larapush.zip unlimited-push-notifications-by-larapush/
+      - name: upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: unlimited-push-notifications-by-larapush
+          path: push-notifications-by-larapush.zip

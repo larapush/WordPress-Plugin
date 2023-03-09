@@ -3,18 +3,18 @@
 /**
  * @link              https://larapush.com
  * @since             1.0.0
- * @package           Unlimited_Push_Notifications_By_Larapush
+ * @package           Push_Notifications_By_Larapush
  *
  * @wordpress-plugin
- * Plugin Name:       Unlimited Push Notifications by LaraPush
+ * Plugin Name:       Push Notifications By LaraPush
  * Plugin URI:        https://larapush.com
- * Description:       Unlimited Push Notifications by LaraPush simplifies push notifications on WordPress with unlimited capabilities and AMP support.
+ * Description:       Push Notifications by LaraPush simplifies push notifications on WordPress with unlimited capabilities and AMP support.
  * Version:           1.0.0
  * Author:            Satyam Gupta
  * Author URI:        https://larapush.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       unlimited-push-notifications-by-larapush
+ * Text Domain:       push-notifications-by-larapush
  * Domain Path:       /languages
  */
 
