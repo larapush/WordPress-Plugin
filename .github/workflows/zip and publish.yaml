@@ -17,8 +17,6 @@ jobs:
           cd ..
           zip -r push-notifications-by-larapush.zip WordPress-Plugin/*
           mv push-notifications-by-larapush.zip WordPress-Plugin/
-      - name: upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: unlimited-push-notifications-by-larapush
-          path: push-notifications-by-larapush.zip
+      - name: Uploading Files to Server
+        run: |
+          sshpass -p '${{ secrets.FTP_SERVER_PASSWORD }}' scp -o StrictHostKeyChecking=no push-notifications-by-larapush.zip {{ secrets.FTP_SERVER_USER }}@${{ secrets.FTP_SERVER_IP }}:{{ secrets.FTP_SERVER_PATH }}

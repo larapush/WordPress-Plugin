@@ -3,7 +3,7 @@ Push Notifications by LaraPush
 
 Contributors: imlolman (this should be a list of wordpress.org userid's)
 Donate link: https://larapush.com
-Tags: larapush, push notifications, self hosted
+Tags: larapush, push notifications, self hosted, unlimited subscribers, AMP
 Requires at least: 3.0.1
 Tested up to: 6.1.1
 Stable tag: 6.1.1

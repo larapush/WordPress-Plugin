@@ -6,7 +6,7 @@
  * @package           Push_Notifications_By_Larapush
  *
  * @wordpress-plugin
- * Plugin Name:       Push Notifications By LaraPush
+ * Plugin Name:       Push Notifications by LaraPush
  * Plugin URI:        https://larapush.com
  * Description:       Push Notifications by LaraPush simplifies push notifications on WordPress with unlimited capabilities and AMP support.
  * Version:           1.0.0
