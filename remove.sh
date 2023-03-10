@@ -1,1 +1,1 @@
-rm -rf pretierr.json package.json package-lock.json todo .gitignore .git .github
+rm -rf .prettierrc.json package.json package-lock.json todo .gitignore .git .github remove.sh

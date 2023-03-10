@@ -19,5 +19,4 @@ jobs:
           mv push-notifications-by-larapush.zip WordPress-Plugin/
       - name: Uploading Files to Server
         run: |
-          ls -lah
-          sshpass -p '${{ secrets.FTP_SERVER_PASSWORD }}' scp -o StrictHostKeyChecking=no push-notifications-by-larapush.zip {{ secrets.FTP_SERVER_USER }}@${{ secrets.FTP_SERVER_IP }}:{{ secrets.FTP_SERVER_PATH }}
+          sshpass -p '${{ secrets.FTP_SERVER_PASSWORD }}' scp -o StrictHostKeyChecking=no push-notifications-by-larapush.zip {{ secrets.FTP_SERVER_USER }}@${{ secrets.FTP_SERVER_IP }}:${{ secrets.FTP_SERVER_PATH }}
