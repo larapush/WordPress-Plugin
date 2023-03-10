@@ -8,7 +8,7 @@
  *
  * @package    Unlimited_Push_Notifications_By_Larapush
  * @subpackage Unlimited_Push_Notifications_By_Larapush/admin/helper
- * @author     Satyam Gupta <satyam@larapush.com>
+ * @author     LaraPush <support@larapush.com>
  */
 class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 {

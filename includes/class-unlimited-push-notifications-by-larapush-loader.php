@@ -11,7 +11,7 @@
  *
  * @package    Unlimited_Push_Notifications_By_Larapush
  * @subpackage Unlimited_Push_Notifications_By_Larapush/includes
- * @author     Satyam Gupta <satyam@larapush.com>
+ * @author     LaraPush <support@larapush.com>
  */
 class Unlimited_Push_Notifications_By_Larapush_Loader
 {
