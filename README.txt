@@ -45,16 +45,6 @@ Visit https://larapush.com to learn more about larapush.
 Yes, you can easily integrate "Unlimited Push Notifications By Larapush" with your existing WordPress site.
 However you will need to have a larapush pro panel installed on your server.
 
-== Screenshots ==
-
-TODO: Add Screenshots
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
-
 == Changelog ==
 
 = 1.0 =

@@ -275,7 +275,6 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 'content-type' => 'application/json'
             ],
             'body' => json_encode([
-                // TODO: Change this to your domain
                 'domain' => $site_url,
                 'email' => $email,
                 'password' => $password
