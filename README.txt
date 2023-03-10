@@ -1,7 +1,7 @@
 === Plugin Name ===
 Push Notifications by LaraPush
 
-Contributors: imlolman (this should be a list of wordpress.org userid's)
+Contributors: larapush
 Donate link: https://larapush.com
 Tags: larapush, push notifications, self hosted, unlimited subscribers, AMP
 Requires at least: 3.0.1
@@ -18,7 +18,7 @@ LaraPush is a Lifetime Deal Product that allows you to collect unlimited subscri
 
 "Push Notifications By Larapush" is a powerful add-on that allows users to effortlessly send push notifications from WordPress using larapush.
 
-This premium feature comes with unlimited push notification capabilities and support for AMP, making it a valuable tool for businesses looking to engage with their audience in real-time.
+This premium feature comes with unlimited push notification capabilities, making it a valuable tool for businesses looking to engage with their audience in real-time.
 
 With easy configuration and direct push notification functionality, this add-on streamlines the process of reaching out to your audience, making it an essential tool for any WordPress site owner.
 

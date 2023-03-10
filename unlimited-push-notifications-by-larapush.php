@@ -10,7 +10,7 @@
  * Plugin URI:        https://larapush.com
  * Description:       Push Notifications by LaraPush simplifies push notifications on WordPress with unlimited capabilities and AMP support.
  * Version:           1.0.0
- * Author:            Satyam Gupta
+ * Author:            LaraPush
  * Author URI:        https://larapush.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
