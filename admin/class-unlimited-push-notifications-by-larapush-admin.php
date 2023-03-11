@@ -142,7 +142,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         if ($connection == false) {
             $redirect_url = admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings'); ?>
 			<script>
-				window.location.href = '<?php echo $redirect_url; ?>';
+				window.location.href = '<?php echo esc_url($redirect_url); ?>';
 			</script>
 			<?php
         }

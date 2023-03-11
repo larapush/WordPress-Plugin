@@ -33,5 +33,5 @@ $email = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
         '../images/larapush-logo.svg'; ?>" alt="Larapush Logo" style="width: 200px; height: auto;">
     <h1>Unlimited Push Notifications by Larapush</h1>
     <p>Click the button below to open the Larapush panel in a new tab.</p>
-    <a href="<?php echo $url; ?>" target="_blank" class="button button-primary">Open Larapush Panel</a>
+    <a href="<?php echo esc_url($url); ?>" target="_blank" class="button button-primary">Open Larapush Panel</a>
 </div>
