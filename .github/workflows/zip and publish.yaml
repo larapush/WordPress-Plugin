@@ -15,7 +15,9 @@ jobs:
       - name: Zip the files
         run: |
           cd ..
-          zip -r push-notifications-by-larapush.zip WordPress-Plugin/*
+          mv WordPress-Plugin push-notifications-by-larapush
+          zip -r push-notifications-by-larapush.zip push-notifications-by-larapush/*
+          mv push-notifications-by-larapush WordPress-Plugin
           mv push-notifications-by-larapush.zip WordPress-Plugin/
       - name: Uploading Files to Server
         run: |

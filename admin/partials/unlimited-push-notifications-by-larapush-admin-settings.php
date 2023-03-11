@@ -35,7 +35,7 @@ try {
         <?php settings_errors('unlimited-push-notifications-by-larapush-settings'); ?>
         <?php if (isset($error)) { ?>
             <div class="notice notice-error is-dismissible">
-                <p><?= $error ?></p>
+                <p><?= esc_html($error) ?></p>
             </div>
         <?php } ?>
         <?php if ($integration_done) { ?>
@@ -50,8 +50,10 @@ try {
                 <tr valign="top">
                     <th scope="row">Panel URL</th>
                     <td>
-                        <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?= Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
-                            get_option('unlimited_push_notifications_by_larapush_panel_url')
+                        <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?= esc_attr(
+                            Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                                get_option('unlimited_push_notifications_by_larapush_panel_url')
+                            )
                         ) ?>" />
                         <?php if (
                             get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) ==
@@ -65,14 +67,18 @@ try {
                 </tr>
                 <tr valign="top">
                     <th scope="row">Panel Email</th>
-                    <td><input type="text" name="unlimited_push_notifications_by_larapush_panel_email" value="<?= Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
-                        get_option('unlimited_push_notifications_by_larapush_panel_email')
+                    <td><input type="text" name="unlimited_push_notifications_by_larapush_panel_email" value="<?= esc_attr(
+                        Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                            get_option('unlimited_push_notifications_by_larapush_panel_email')
+                        )
                     ) ?>" /></td>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Panel Password</th>
-                    <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?= Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
-                        get_option('unlimited_push_notifications_by_larapush_panel_password')
+                    <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?= esc_attr(
+                        Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                            get_option('unlimited_push_notifications_by_larapush_panel_password')
+                        )
                     ) ?>" /></td>
                 </tr>
             
@@ -106,10 +112,10 @@ try {
                                 []
                             );
                             foreach ($domains as $domain) { ?>
-                                <option value="<?= $domain ?>"  <?php selected(
+                                <option value="<?= esc_attr($domain) ?>"  <?php selected(
     true,
     in_array($domain, $domains_selected)
-); ?>><?= $domain ?></option>
+); ?>><?= esc_html($domain) ?></option>
                             <?php }
                             ?>
                         </select>
@@ -120,7 +126,7 @@ try {
                 <tr valign="top">
                     <th scope="row">Select Migrated Domains to Send Notifications</th>
                     <td>
-                        <select name="unlimited_push_notifications_by_larapush_panel_migrated_domains_selected[]" multiple="multiple" style="width: 100%; height: 100px;">
+                        <select name="unlimited_push_notifications_by_larapush_panel_migrated_domains_selected[]" id="unlimited_push_notifications_by_larapush_panel_migrated_domains_selected" multiple="multiple" style="width: 100%; height: 100px;">
                             <?php
                             $migrated_domains = get_option(
                                 'unlimited_push_notifications_by_larapush_panel_migrated_domains',
@@ -131,24 +137,28 @@ try {
                                 []
                             );
                             foreach ($migrated_domains as $domain) { ?>
-                                <option value="<?= $domain ?>"  <?php selected(
+                                <option value="<?= esc_attr($domain) ?>"  <?php selected(
     true,
     in_array($domain, $migrated_domains_selected)
-); ?>><?= $domain ?></option>
+); ?>><?= esc_html($domain) ?></option>
                             <?php }
                             ?>
                         </select>
+                        <p class="description">
+                            <button type="button" class="button button-secondary" id="unselect_all_migrated_domains" onclick='document.querySelectorAll("#unlimited_push_notifications_by_larapush_panel_migrated_domains_selected>option").forEach(e => e.selected = false)'>Unselect All</button>
+                        </p>
                         <p class="description">Use ctrl to select multiple domains</p>
                     </td>
                 </tr>
                 <?php } ?>
                 <tr valign="top">
-                    <th scope="row">Add Code for AMP</th>
+                    <th scope="row">Enable AMP</th>
                     <td><input type="checkbox" name="unlimited_push_notifications_by_larapush_add_code_for_amp" value="1" <?php checked(
                         1,
                         get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', 0),
                         true
-                    ); ?> /></td>
+                    ); ?> />
+                    <p class="description">Check to show subscribe button on AMP.</p></td>
                 </tr>
                 <tr valign="top">
                     <th scope="row">AMP Subscribe Button Location</th>

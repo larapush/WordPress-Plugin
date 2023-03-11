@@ -120,7 +120,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         if (
             !$setup_done and
             !isset($_GET['page']) and
-            $_GET['page'] != 'unlimited-push-notifications-by-larapush-settings'
+            sanitize_text_field($_GET['page']) != 'unlimited-push-notifications-by-larapush-settings'
         ) { ?>
 			<div class="notice notice-warning is-dismissible">
 				<p><strong>Larapush</strong> is not setup yet. <a href="<?php echo admin_url(
@@ -142,7 +142,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         if ($connection == false) {
             $redirect_url = admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings'); ?>
 			<script>
-				window.location.href = '<?php echo $redirect_url; ?>';
+				window.location.href = '<?php echo esc_url($redirect_url); ?>';
 			</script>
 			<?php
         }
@@ -167,7 +167,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
     public function larapush_connect()
     {
         // Check if nonce is valid
-        if (!wp_verify_nonce($_POST['_wpnonce'], 'larapush_connect')) {
+        if (!wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'larapush_connect')) {
             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect('Invalid nonce.');
         }
 
@@ -179,17 +179,27 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         }
 
         // Check if panel url is valid
-        if (!filter_var($_POST['unlimited_push_notifications_by_larapush_panel_url'], FILTER_VALIDATE_URL)) {
+        if (
+            !filter_var(
+                sanitize_text_field($_POST['unlimited_push_notifications_by_larapush_panel_url']),
+                FILTER_VALIDATE_URL
+            )
+        ) {
             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect('Invalid panel url.');
         }
 
         // Check if panel email is valid
-        if (!filter_var($_POST['unlimited_push_notifications_by_larapush_panel_email'], FILTER_VALIDATE_EMAIL)) {
+        if (
+            !filter_var(
+                sanitize_text_field($_POST['unlimited_push_notifications_by_larapush_panel_email']),
+                FILTER_VALIDATE_EMAIL
+            )
+        ) {
             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect('Invalid panel email.');
         }
 
         // Check if panel password is valid
-        if (empty($_POST['unlimited_push_notifications_by_larapush_panel_password'])) {
+        if (empty(sanitize_text_field($_POST['unlimited_push_notifications_by_larapush_panel_password']))) {
             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect('Invalid panel password.');
         }
 
@@ -220,26 +230,30 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
             'unlimited_push_notifications_by_larapush_push_on_publish',
             isset($_POST['unlimited_push_notifications_by_larapush_push_on_publish']) ? 1 : 0
         );
+
+        // Array of Domains come from Select tag
         update_option(
             'unlimited_push_notifications_by_larapush_panel_domains_selected',
             isset($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])
-                ? $_POST['unlimited_push_notifications_by_larapush_panel_domains_selected']
+                ? (array) $_POST['unlimited_push_notifications_by_larapush_panel_domains_selected']
                 : []
         );
+        // Array of Migrated Domains come from Select tag
         update_option(
             'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
             isset($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])
-                ? $_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected']
+                ? (array) $_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected']
                 : []
         );
         update_option(
             'unlimited_push_notifications_by_larapush_add_code_for_amp',
             isset($_POST['unlimited_push_notifications_by_larapush_add_code_for_amp']) ? 1 : 0
         );
+        // Array of AMP Code Location come from Select tag
         update_option(
             'unlimited_push_notifications_by_larapush_amp_code_location',
             isset($_POST['unlimited_push_notifications_by_larapush_amp_code_location'])
-                ? $_POST['unlimited_push_notifications_by_larapush_amp_code_location']
+                ? (array) $_POST['unlimited_push_notifications_by_larapush_amp_code_location']
                 : []
         );
 
@@ -256,7 +270,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
     public function code_integration()
     {
         // Check if nonce is valid
-        if (!wp_verify_nonce($_POST['_wpnonce'], 'larapush_code_integration')) {
+        if (!wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'larapush_code_integration')) {
             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect('Invalid nonce.');
         }
 
@@ -322,7 +336,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
      */
     public function larapush_send_notification()
     {
-        $id = $_POST['post_id'];
+        $id = sanitize_text_field($_POST['post_id']);
         $notification = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::send_notification($id);
         if ($notification) {
             die(
