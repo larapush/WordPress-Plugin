@@ -35,7 +35,7 @@ try {
         <?php settings_errors('unlimited-push-notifications-by-larapush-settings'); ?>
         <?php if (isset($error)) { ?>
             <div class="notice notice-error is-dismissible">
-                <p><?= $error ?></p>
+                <p><?= esc_html($error) ?></p>
             </div>
         <?php } ?>
         <?php if ($integration_done) { ?>
@@ -50,9 +50,9 @@ try {
                 <tr valign="top">
                     <th scope="row">Panel URL</th>
                     <td>
-                        <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?= Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                        <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?= esc_attr(Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
                             get_option('unlimited_push_notifications_by_larapush_panel_url')
-                        ) ?>" />
+                        )) ?>" />
                         <?php if (
                             get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) ==
                             true
@@ -65,15 +65,15 @@ try {
                 </tr>
                 <tr valign="top">
                     <th scope="row">Panel Email</th>
-                    <td><input type="text" name="unlimited_push_notifications_by_larapush_panel_email" value="<?= Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                    <td><input type="text" name="unlimited_push_notifications_by_larapush_panel_email" value="<?= esc_attr(Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
                         get_option('unlimited_push_notifications_by_larapush_panel_email')
-                    ) ?>" /></td>
+                    )) ?>" /></td>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Panel Password</th>
-                    <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?= Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                    <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?= esc_attr(Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
                         get_option('unlimited_push_notifications_by_larapush_panel_password')
-                    ) ?>" /></td>
+                    )) ?>" /></td>
                 </tr>
             
                 
@@ -106,10 +106,10 @@ try {
                                 []
                             );
                             foreach ($domains as $domain) { ?>
-                                <option value="<?= $domain ?>"  <?php selected(
+                                <option value="<?= esc_attr($domain) ?>"  <?php selected(
     true,
     in_array($domain, $domains_selected)
-); ?>><?= $domain ?></option>
+); ?>><?= esc_html($domain) ?></option>
                             <?php }
                             ?>
                         </select>
@@ -131,10 +131,10 @@ try {
                                 []
                             );
                             foreach ($migrated_domains as $domain) { ?>
-                                <option value="<?= $domain ?>"  <?php selected(
+                                <option value="<?= esc_attr($domain) ?>"  <?php selected(
     true,
     in_array($domain, $migrated_domains_selected)
-); ?>><?= $domain ?></option>
+); ?>><?= esc_html($domain) ?></option>
                             <?php }
                             ?>
                         </select>
