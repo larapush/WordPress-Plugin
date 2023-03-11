@@ -179,12 +179,22 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         }
 
         // Check if panel url is valid
-        if (!filter_var(sanitize_text_field($_POST['unlimited_push_notifications_by_larapush_panel_url']), FILTER_VALIDATE_URL)) {
+        if (
+            !filter_var(
+                sanitize_text_field($_POST['unlimited_push_notifications_by_larapush_panel_url']),
+                FILTER_VALIDATE_URL
+            )
+        ) {
             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect('Invalid panel url.');
         }
 
         // Check if panel email is valid
-        if (!filter_var(sanitize_text_field($_POST['unlimited_push_notifications_by_larapush_panel_email']), FILTER_VALIDATE_EMAIL)) {
+        if (
+            !filter_var(
+                sanitize_text_field($_POST['unlimited_push_notifications_by_larapush_panel_email']),
+                FILTER_VALIDATE_EMAIL
+            )
+        ) {
             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect('Invalid panel email.');
         }
 
@@ -220,7 +230,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
             'unlimited_push_notifications_by_larapush_push_on_publish',
             isset($_POST['unlimited_push_notifications_by_larapush_push_on_publish']) ? 1 : 0
         );
-        
+
         // Array of Domains come from Select tag
         update_option(
             'unlimited_push_notifications_by_larapush_panel_domains_selected',

@@ -50,9 +50,11 @@ try {
                 <tr valign="top">
                     <th scope="row">Panel URL</th>
                     <td>
-                        <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?= esc_attr(Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
-                            get_option('unlimited_push_notifications_by_larapush_panel_url')
-                        )) ?>" />
+                        <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?= esc_attr(
+                            Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                                get_option('unlimited_push_notifications_by_larapush_panel_url')
+                            )
+                        ) ?>" />
                         <?php if (
                             get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) ==
                             true
@@ -65,15 +67,19 @@ try {
                 </tr>
                 <tr valign="top">
                     <th scope="row">Panel Email</th>
-                    <td><input type="text" name="unlimited_push_notifications_by_larapush_panel_email" value="<?= esc_attr(Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
-                        get_option('unlimited_push_notifications_by_larapush_panel_email')
-                    )) ?>" /></td>
+                    <td><input type="text" name="unlimited_push_notifications_by_larapush_panel_email" value="<?= esc_attr(
+                        Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                            get_option('unlimited_push_notifications_by_larapush_panel_email')
+                        )
+                    ) ?>" /></td>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Panel Password</th>
-                    <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?= esc_attr(Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
-                        get_option('unlimited_push_notifications_by_larapush_panel_password')
-                    )) ?>" /></td>
+                    <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?= esc_attr(
+                        Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                            get_option('unlimited_push_notifications_by_larapush_panel_password')
+                        )
+                    ) ?>" /></td>
                 </tr>
             
                 

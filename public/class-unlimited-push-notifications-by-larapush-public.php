@@ -60,8 +60,13 @@ class Unlimited_Push_Notifications_By_Larapush_Public
             if (get_option('unlimited_push_notifications_by_larapush_enable_push_notifications', false)) {
                 # Add the code to header
                 $code = get_option('unlimited_push_notifications_by_larapush_codes', []);
-                if (array_key_exists('code_to_be_added_in_header', $code)) {
-                    echo $code['code_to_be_added_in_header'];
+                if (
+                    array_key_exists('code_to_be_added_in_header_data', $code) &&
+                    array_key_exists('script_url', $code['code_to_be_added_in_header_data'])
+                ) {
+                    $script_url = $code['code_to_be_added_in_header_data']['script_url'];
+
+                    include_once plugin_dir_path(__FILE__) . 'partials/web-header.php';
                 }
             }
         } else {
@@ -82,9 +87,15 @@ class Unlimited_Push_Notifications_By_Larapush_Public
 
         # Check if amp is enabled
         if ($amp_enabled) {
-            if (array_key_exists('amp_code_to_be_added_in_header', $code)) {
-                echo $code['amp_code_to_be_added_in_header'];
+            if (
+                array_key_exists('amp_code_to_be_added_in_header_data', $code) &&
+                array_key_exists('amp_button_color', $code['amp_code_to_be_added_in_header_data'])
+            ) {
+                $amp_button_color = $code['amp_code_to_be_added_in_header_data']['amp_button_color'];
+            } else {
+                $amp_button_color = '#000000';
             }
+            include_once plugin_dir_path(__FILE__) . 'partials/amp-header.php';
 
             # Check if user has selected header location
             if (in_array('header', $locations)) {
@@ -157,8 +168,14 @@ class Unlimited_Push_Notifications_By_Larapush_Public
     private function get_widget_code()
     {
         $code = get_option('unlimited_push_notifications_by_larapush_codes', []);
-        if (array_key_exists('amp_code_widget', $code)) {
-            return $code['amp_code_widget'];
+        if (
+            array_key_exists('amp_code_widget', $code) &&
+            array_key_exists('amp_button_text', $code['amp_code_widget']) &&
+            array_key_exists('amp_unsubscribe_button', $code['amp_code_widget'])
+        ) {
+            $amp_button_text = $code['amp_code_widget']['amp_button_text'];
+            $amp_unsubscribe_button = $code['amp_code_widget']['amp_unsubscribe_button'];
+            include_once plugin_dir_path(__FILE__) . 'partials/amp-widget.php';
         }
         return '';
     }

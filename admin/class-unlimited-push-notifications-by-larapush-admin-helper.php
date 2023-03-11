@@ -224,7 +224,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             }
 
             update_option('unlimited_push_notifications_by_larapush_panel_domains', $body->data->domains);
-            if(get_option('unlimited_push_notifications_by_larapush_panel_domains_selected', false) == false){
+            if (get_option('unlimited_push_notifications_by_larapush_panel_domains_selected', false) == false) {
                 update_option('unlimited_push_notifications_by_larapush_panel_domains_selected', $body->data->domains);
             }
 
@@ -232,7 +232,9 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 'unlimited_push_notifications_by_larapush_panel_migrated_domains',
                 $body->data->migrated_domains
             );
-            if(get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', false) == false){
+            if (
+                get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', false) == false
+            ) {
                 update_option(
                     'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
                     $body->data->migrated_domains
@@ -349,13 +351,30 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 file_put_contents($permission_dialog_file, $permission_dialog);
 
                 // Writing codes to database
-                $code_to_be_added_in_header = $body->data->integration->integrationCode->code_to_be_added_in_header;
-                $amp_code_to_be_added_in_header = $body->data->integration->ampIntegrationCode->header;
-                $amp_code_widget = $body->data->integration->ampIntegrationCode->widget;
+                // $code_to_be_added_in_header = $body->data->integration->integrationCode->code_to_be_added_in_header;
+                // $amp_code_to_be_added_in_header = $body->data->integration->ampIntegrationCode->header;
+                // $amp_code_widget = $body->data->integration->ampIntegrationCode->widget;
+
+                // Getting WEB Header code URLs and data
+                $script_url = esc_url(get_site_url() . '/' . $js_filename);
+                $code_to_be_added_in_header_data = [
+                    'script_url' => $script_url
+                ];
+
+                // Getting AMP Header code URLs and data
+                $popup_data = $body->data->integration->ampIntegrationCode->popup_data;
+                $amp_code_to_be_added_in_header_data = [
+                    'amp_button_color' => $popup_data->bg
+                ];
+                $amp_code_widget_data = [
+                    'amp_button_text' => $popup_data->button_text,
+                    'amp_unsubscribe_button' => $popup_data->unsubscribe_button
+                ];
+
                 $codes = [
-                    'code_to_be_added_in_header' => $code_to_be_added_in_header,
-                    'amp_code_to_be_added_in_header' => $amp_code_to_be_added_in_header,
-                    'amp_code_widget' => $amp_code_widget
+                    'code_to_be_added_in_header_data' => $code_to_be_added_in_header_data,
+                    'amp_code_to_be_added_in_header_data' => $amp_code_to_be_added_in_header_data,
+                    'amp_code_widget_data' => $amp_code_widget_data
                 ];
 
                 update_option('unlimited_push_notifications_by_larapush_codes', $codes);
