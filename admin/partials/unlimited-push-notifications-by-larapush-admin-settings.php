@@ -126,7 +126,7 @@ try {
                 <tr valign="top">
                     <th scope="row">Select Migrated Domains to Send Notifications</th>
                     <td>
-                        <select name="unlimited_push_notifications_by_larapush_panel_migrated_domains_selected[]" multiple="multiple" style="width: 100%; height: 100px;">
+                        <select name="unlimited_push_notifications_by_larapush_panel_migrated_domains_selected[]" id="unlimited_push_notifications_by_larapush_panel_migrated_domains_selected" multiple="multiple" style="width: 100%; height: 100px;">
                             <?php
                             $migrated_domains = get_option(
                                 'unlimited_push_notifications_by_larapush_panel_migrated_domains',
@@ -144,17 +144,21 @@ try {
                             <?php }
                             ?>
                         </select>
+                        <p class="description">
+                            <button type="button" class="button button-secondary" id="unselect_all_migrated_domains" onclick='document.querySelectorAll("#unlimited_push_notifications_by_larapush_panel_migrated_domains_selected>option").forEach(e => e.selected = false)'>Unselect All</button>
+                        </p>
                         <p class="description">Use ctrl to select multiple domains</p>
                     </td>
                 </tr>
                 <?php } ?>
                 <tr valign="top">
-                    <th scope="row">Add Code for AMP</th>
+                    <th scope="row">Enable AMP</th>
                     <td><input type="checkbox" name="unlimited_push_notifications_by_larapush_add_code_for_amp" value="1" <?php checked(
                         1,
                         get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', 0),
                         true
-                    ); ?> /></td>
+                    ); ?> />
+                    <p class="description">Check to show subscribe button on AMP.</p></td>
                 </tr>
                 <tr valign="top">
                     <th scope="row">AMP Subscribe Button Location</th>

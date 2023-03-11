@@ -169,13 +169,20 @@ class Unlimited_Push_Notifications_By_Larapush_Public
     {
         $code = get_option('unlimited_push_notifications_by_larapush_codes', []);
         if (
-            array_key_exists('amp_code_widget', $code) &&
-            array_key_exists('amp_button_text', $code['amp_code_widget']) &&
-            array_key_exists('amp_unsubscribe_button', $code['amp_code_widget'])
+            array_key_exists('amp_code_widget_data', $code) &&
+            array_key_exists('amp_button_text', $code['amp_code_widget_data']) &&
+            array_key_exists('amp_unsubscribe_button', $code['amp_code_widget_data'])
         ) {
-            $amp_button_text = $code['amp_code_widget']['amp_button_text'];
-            $amp_unsubscribe_button = $code['amp_code_widget']['amp_unsubscribe_button'];
-            include_once plugin_dir_path(__FILE__) . 'partials/amp-widget.php';
+            $amp_button_text = $code['amp_code_widget_data']['amp_button_text'];
+            $amp_unsubscribe_button = $code['amp_code_widget_data']['amp_unsubscribe_button'];
+
+            // Output Buffer to capture the code of amp-widget
+            ob_start(); // start capturing output
+            include plugin_dir_path(__FILE__) . 'partials/amp-widget.php';
+            $content = ob_get_contents(); // get the contents from the buffer
+            ob_end_clean();
+
+            return $content;
         }
         return '';
     }

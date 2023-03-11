@@ -224,7 +224,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             }
 
             update_option('unlimited_push_notifications_by_larapush_panel_domains', $body->data->domains);
-            if (get_option('unlimited_push_notifications_by_larapush_panel_domains_selected', false) == false) {
+            if (get_option('unlimited_push_notifications_by_larapush_panel_domains_selected', false) === false) {
                 update_option('unlimited_push_notifications_by_larapush_panel_domains_selected', $body->data->domains);
             }
 
@@ -233,7 +233,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 $body->data->migrated_domains
             );
             if (
-                get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', false) == false
+                get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', false) === false
             ) {
                 update_option(
                     'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
