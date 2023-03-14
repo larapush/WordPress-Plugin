@@ -11,7 +11,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Remove unwanted files
         run: |
-          php cache_clear.php ${{ secrets.CF_ZONE_ID }} ${{ secrets.CF_AUTH_TOKEN }}
           chmod 777 ./remove.sh
           ./remove.sh
       - name: Zip the files
@@ -24,3 +23,11 @@ jobs:
       - name: Uploading Files to Server
         run: |
           sshpass -p '${{ secrets.FTP_SERVER_PASSWORD }}' scp -o StrictHostKeyChecking=no push-notifications-by-larapush.zip ${{ secrets.FTP_SERVER_USER }}@${{ secrets.FTP_SERVER_IP }}:${{ secrets.FTP_SERVER_PATH }}
+          curl --location 'https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache?url=https%3A%2F%2Fftp.larapush.com%2Fpush-notifications-by-larapush.zip' \
+          --header 'Authorization: Bearer ${{ secrets.CF_AUTH_TOKEN }}' \
+          --header 'Content-Type: application/json' \
+          --data '{
+              "files": [
+                  "https://ftp.larapush.com/push-notifications-by-larapush.php"
+              ]
+          }'
