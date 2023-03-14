@@ -18,7 +18,7 @@ curl_setopt_array($curl, array(
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => 'POST',
   CURLOPT_POSTFIELDS =>'{
-    "file": "https://ftp.larapush.com/push-notifications-by-larapush.zip" 
+    "files": "https://ftp.larapush.com/push-notifications-by-larapush.zip" 
 }',
   CURLOPT_HTTPHEADER => array(
     'Authorization: Bearer '.$token,
