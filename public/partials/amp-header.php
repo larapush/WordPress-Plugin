@@ -1,5 +1,5 @@
 <script async custom-element="amp-web-push" src="https://cdn.ampproject.org/v0/amp-web-push-0.1.js"></script>
-<amp-web-push id="amp-web-push" layout="nodisplay" helper-iframe-url="<?= get_site_url() ?>/helper-frame.html" permission-dialog-url="<?= get_site_url() ?>/permission-dialog.html" service-worker-url="<?= get_site_url() ?>/firebase-messaging-sw.js"></amp-web-push>
+<amp-web-push id="amp-web-push" layout="nodisplay" helper-iframe-url="<?php echo get_site_url() ?>/helper-frame.html" permission-dialog-url="<?php echo get_site_url() ?>/permission-dialog.html" service-worker-url="<?php echo get_site_url() ?>/firebase-messaging-sw.js"></amp-web-push>
 <style amp-custom>
   .larapush-btn {
     height: 50px;

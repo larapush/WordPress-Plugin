@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - dev
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,3 +23,11 @@ jobs:
       - name: Uploading Files to Server
         run: |
           sshpass -p '${{ secrets.FTP_SERVER_PASSWORD }}' scp -o StrictHostKeyChecking=no push-notifications-by-larapush.zip ${{ secrets.FTP_SERVER_USER }}@${{ secrets.FTP_SERVER_IP }}:${{ secrets.FTP_SERVER_PATH }}
+          curl --location 'https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache' \
+          --header 'Authorization: Bearer ${{ secrets.CF_AUTH_TOKEN }}' \
+          --header 'Content-Type: application/json' \
+          --data '{
+              "files": [
+                  "https://ftp.larapush.com/push-notifications-by-larapush.zip"
+              ]
+          }'

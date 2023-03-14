@@ -107,12 +107,12 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
     {
         $error_msg = get_transient('larapush_error');
         if ($error_msg) {
-            echo '<div class="notice notice-error is-dismissible"><p><strong>' . $error_msg . '</strong></p></div>';
+            echo '<div class="notice notice-error is-dismissible"><p><strong>' . esc_html($error_msg) . '</strong></p></div>';
             delete_transient('larapush_error');
         }
         $success_msg = get_transient('larapush_success');
         if ($success_msg) {
-            echo '<div class="notice notice-success is-dismissible"><p><strong>' . $success_msg . '</strong></p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p><strong>' . esc_html($success_msg) . '</strong></p></div>';
             delete_transient('larapush_success');
         }
 
