@@ -35,7 +35,7 @@ try {
         <?php settings_errors('unlimited-push-notifications-by-larapush-settings'); ?>
         <?php if (isset($error)) { ?>
             <div class="notice notice-error is-dismissible">
-                <p><?= esc_html($error) ?></p>
+                <p><?php echo esc_html($error) ?></p>
             </div>
         <?php } ?>
         <?php if ($integration_done) { ?>
@@ -43,14 +43,14 @@ try {
                 <p>Settings saved.</p>
             </div>
         <?php } ?>
-        <form method="post" action="<?= esc_url(admin_url('admin-post.php')) ?>" style="display: inline">
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')) ?>" style="display: inline">
             <input type="hidden" name="action" value="larapush_connect">			
             <?php wp_nonce_field('larapush_connect'); ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row">Panel URL</th>
                     <td>
-                        <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?= esc_attr(
+                        <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?php echo esc_attr(
                             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
                                 get_option('unlimited_push_notifications_by_larapush_panel_url')
                             )
@@ -59,7 +59,7 @@ try {
                             get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) ==
                             true
                         ) { ?>
-                            <p class="description"><?= $connection == true
+                            <p class="description"><?php echo $connection == true
                                 ? '<span class="dashicons dashicons-yes" style="color: green;"></span> Connected'
                                 : '<span class="dashicons dashicons-no" style="color: red;"></span> Not Connected' ?></p>
                         <?php } ?>
@@ -67,7 +67,7 @@ try {
                 </tr>
                 <tr valign="top">
                     <th scope="row">Panel Email</th>
-                    <td><input type="text" name="unlimited_push_notifications_by_larapush_panel_email" value="<?= esc_attr(
+                    <td><input type="text" name="unlimited_push_notifications_by_larapush_panel_email" value="<?php echo esc_attr(
                         Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
                             get_option('unlimited_push_notifications_by_larapush_panel_email')
                         )
@@ -75,7 +75,7 @@ try {
                 </tr>
                 <tr valign="top">
                     <th scope="row">Panel Password</th>
-                    <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?= esc_attr(
+                    <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?php echo esc_attr(
                         Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
                             get_option('unlimited_push_notifications_by_larapush_panel_password')
                         )
@@ -112,10 +112,10 @@ try {
                                 []
                             );
                             foreach ($domains as $domain) { ?>
-                                <option value="<?= esc_attr($domain) ?>"  <?php selected(
+                                <option value="<?php echo esc_attr($domain) ?>"  <?php selected(
     true,
     in_array($domain, $domains_selected)
-); ?>><?= esc_html($domain) ?></option>
+); ?>><?php echo esc_html($domain) ?></option>
                             <?php }
                             ?>
                         </select>
@@ -137,10 +137,10 @@ try {
                                 []
                             );
                             foreach ($migrated_domains as $domain) { ?>
-                                <option value="<?= esc_attr($domain) ?>"  <?php selected(
+                                <option value="<?php echo esc_attr($domain) ?>"  <?php selected(
     true,
     in_array($domain, $migrated_domains_selected)
-); ?>><?= esc_html($domain) ?></option>
+); ?>><?php echo esc_html($domain) ?></option>
                             <?php }
                             ?>
                         </select>
