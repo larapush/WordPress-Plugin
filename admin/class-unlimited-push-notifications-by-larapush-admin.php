@@ -232,29 +232,55 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         );
 
         // Array of Domains come from Select tag
+        $domains_selected = [];
+        if (isset($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])) {
+            // check if array
+            if (is_array($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])) {
+                // loop through array
+                foreach ($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'] as $domain) {
+                    $domains_selected[] = sanitize_text_field($domain);
+                }
+            }
+        }
         update_option(
             'unlimited_push_notifications_by_larapush_panel_domains_selected',
-            isset($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])
-                ? (array) $_POST['unlimited_push_notifications_by_larapush_panel_domains_selected']
-                : []
+            $domains_selected
         );
+
         // Array of Migrated Domains come from Select tag
+        $migrated_domains_selected = [];
+        if (isset($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])) {
+            // check if array
+            if (is_array($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])) {
+                // loop through array
+                foreach ($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'] as $domain) {
+                    $migrated_domains_selected[] = sanitize_text_field($domain);
+                }
+            }
+        }
         update_option(
             'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
-            isset($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])
-                ? (array) $_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected']
-                : []
+            $migrated_domains_selected
         );
         update_option(
             'unlimited_push_notifications_by_larapush_add_code_for_amp',
             isset($_POST['unlimited_push_notifications_by_larapush_add_code_for_amp']) ? 1 : 0
         );
+
         // Array of AMP Code Location come from Select tag
+        $amp_code_location = [];
+        if (isset($_POST['unlimited_push_notifications_by_larapush_amp_code_location'])) {
+            // check if array
+            if (is_array($_POST['unlimited_push_notifications_by_larapush_amp_code_location'])) {
+                // loop through array
+                foreach ($_POST['unlimited_push_notifications_by_larapush_amp_code_location'] as $location) {
+                    $amp_code_location[] = sanitize_text_field($location);
+                }
+            }
+        }
         update_option(
             'unlimited_push_notifications_by_larapush_amp_code_location',
-            isset($_POST['unlimited_push_notifications_by_larapush_amp_code_location'])
-                ? (array) $_POST['unlimited_push_notifications_by_larapush_amp_code_location']
-                : []
+            $amp_code_location
         );
 
         // Redirect to settings page
