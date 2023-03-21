@@ -12,6 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 LaraPush's "Push Notifications" is a premium add-on exclusively available for the larapush pro panel. With this add-on, users can easily configure larapush and send push notifications directly from WordPress, without any limitations. Additionally, this add-on also supports AMP.
 
 == Description ==
+### [What is LaraPush? 🔗](https://larapush.com)
 
 LaraPush is a self-hosted push notification panel that comes with a one-time cost and lets you add unlimited domains, collect unlimited subscribers and send unlimited campaigns for unlimited period of time. It also supports AMP.
 
