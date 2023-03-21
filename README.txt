@@ -1,26 +1,54 @@
-=== Plugin Name ===
-Push Notifications by LaraPush
-
+=== Push Notifications by LaraPush ===
 Contributors: larapush
-Donate link: https://larapush.com
+Donate link: [LaraPush.com](https://larapush.com/ "Self hosted Push Notifications at one-time cost")
 Tags: larapush, push notifications, self hosted, unlimited subscribers, AMP
 Requires at least: 3.0.1
+Requires PHP: 7.0
 Tested up to: 6.1.1
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Larapush's "Push Notifications" is a premium add-on exclusively available for the larapush pro panel. With this add-on, users can easily configure larapush and send push notifications directly from WordPress, without any limitations. Additionally, this add-on also supports AMP.
+LaraPush's "Push Notifications" is a premium add-on exclusively available for the larapush pro panel. With this add-on, users can easily configure larapush and send push notifications directly from WordPress, without any limitations. Additionally, this add-on also supports AMP.
 
 == Description ==
 
-LaraPush is a Lifetime Deal Product that allows you to collect unlimited subscribers, add unlimited websites and send unlimited push notifications. It is a self-hosted solution that allows you to send push notifications to your subscribers without any limitations. It also supports AMP.
+LaraPush is a self-hosted push notification panel that comes with a one-time cost and lets you add unlimited domains, collect unlimited subscribers and send unlimited campaigns for unlimited period of time. It also supports AMP.
 
-"Push Notifications By Larapush" is a powerful add-on that allows users to effortlessly send push notifications from WordPress using larapush.
+### 🌀 How LaraPush is Different from Other Services?
 
-This premium feature comes with unlimited push notification capabilities, making it a valuable tool for businesses looking to engage with their audience in real-time.
+* Other SaaS Push Services have recurring monthly expenses.    
+* Furthermore, other services charge you based on the number of domains you add    
+* They charge you based on the amount of subscribers you have    
+* Which will increase over time and increase costs exponentially.    
+    
+### BUT 🍑
+    
+🧑‍💻 LaraPush is not a SAAS.    
+📟 LaraPush is a Self Hosted Push Notification Panel    
+🌐 Register Unlimited domains    
+👥 Collect Unlimited Subscriptions    
+🪧 Send Unlimited Notifications    
+♾️ For as long as you want    
+💵 By just paying a One-time Fee    
 
-With easy configuration and direct push notification functionality, this add-on streamlines the process of reaching out to your audience, making it an essential tool for any WordPress site owner.
+###  🌀 Larapush: All Enterprise-level features at a one-time price
+    
+* Unlimited Domains, Unlimited Subscribers, Unlimited Notifications ⭐    
+* AutoMagic Push (Set it and forget it: Schedule daily random post notification from your blog) ⭐    
+* Welcome Push    
+* Push on Publish ⭐    
+* 1 Click Push    
+* Statistics (Location, Device, OS and much more...)    
+* Segmentation based on 6 Different parameters including url based.    
+* Speed Up to 1.5 Million per minute. 😲    
+* Import / Export Subscribers    
+* Open API for Developer Integration ⭐    
+* Server Status / Management    
+
+### [✅ Take A Free Demo](https://larapush.com/#demo)    
+### [📞 Contact Us for Any Enquiry](https://larapush.com/contact/)    
+### [🌐 Visit Our Website for More Info](https://larapush.com/)    
 
 == Installation ==
 
@@ -30,19 +58,19 @@ e.g.
 
 1. Upload `unlimited-push-notifications-by-larapush.php` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Configure the plugin through the 'Larapush > Settings' menu in WordPress
+3. Configure the plugin through the 'LaraPush > Settings' menu in WordPress
 
 == Frequently Asked Questions ==
 
-= What is Larapush? =
+= What is LaraPush? =
 
 LaraPush is a Lifetime Deal Product that allows you to collect unlimited subscribers, add unlimited websites and send unlimited push notifications. 
 It is a self-hosted solution that allows you to send push notifications to your subscribers without any limitations. It also supports AMP.
-Visit https://larapush.com to learn more about larapush.
+Visit [LaraPush.com](https://larapush.com/ "Self hosted Push Notifications at one-time cost") to learn more about larapush.
 
-= Can I use "Unlimited Push Notifications By Larapush" on my existing WordPress site? =
+= Can I use "Unlimited Push Notifications By LaraPush" on my existing WordPress site? =
 
-Yes, you can easily integrate "Unlimited Push Notifications By Larapush" with your existing WordPress site.
+Yes, you can easily integrate "Unlimited Push Notifications By LaraPush" with your existing WordPress site.
 However you will need to have a larapush pro panel installed on your server.
 
 == Changelog ==
@@ -50,19 +78,27 @@ However you will need to have a larapush pro panel installed on your server.
 = 1.0 =
 * Plugin released.
 
+== Upgrade Notice ==
+* Need LaraPush Pro v3 or Above
+
+== Screenshots ==
+1. Introduction to LaraPush
+2. One Click Notification
+3. Push On Publish
+4. AMP Integration
+5. LaraPush is Different
+6. Do the maths Yourself
+7. All Enterprise-level Features at a one-time price
+
+
 == Arbitrary section ==
 
-Larapush is a powerful push notification service for websites, specially WordPress.
+LaraPush is a powerful push notification service for websites, specially WordPress.
 It allows you to send notifications to your users in real-time, helping you keep them engaged and informed.
 
-What makes Larapush stand out from the competition is its value for money.
-Unlike other push notification services, Larapush doesn't charge a monthly fee that eats into your profits.
-Instead, you only pay once and enjoy the benefits forever.
-This makes Larapush the best value for money in the market.
-
-With Larapush, you can reach your users with targeted notifications based on their interests and actions.
+With LaraPush, you can reach your users with targeted notifications based on their interests and actions.
 You can also personalize your notifications with custom branding and messaging, making them more engaging and memorable.
 
-Overall, if you're looking for a cost-effective and powerful push notification service, Larapush is a great option to consider.
+Overall, if you're looking for a cost-effective and powerful push notification service, LaraPush is a great option to consider.
 
-For More Information, Visit https://larapush.com
+For More Information, Visit [LaraPush.com](https://larapush.com/ "Self hosted Push Notifications at one-time cost")
