@@ -1,0 +1,1 @@
+<amp-web-push id="amp-web-push" layout="nodisplay" helper-iframe-url="<?php echo get_site_url() ?>/helper-frame.html" permission-dialog-url="<?php echo get_site_url() ?>/permission-dialog.html" service-worker-url="<?php echo get_site_url() ?>/firebase-messaging-sw.js"></amp-web-push>

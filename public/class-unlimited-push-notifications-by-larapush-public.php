@@ -69,17 +69,56 @@ class Unlimited_Push_Notifications_By_Larapush_Public
                     include_once plugin_dir_path(__FILE__) . 'partials/web-header.php';
                 }
             }
-        } else {
-            $this->amp_post_template_head();
+        }else{
+            include_once plugin_dir_path(__FILE__) . 'partials/amp-after-body-opening.php';
         }
     }
 
     /**
      * Adds the amp code to header
      *
-     * @since 1.0.0
+     * @since 1.0.2
      */
     public function amp_post_template_head()
+    {
+        $amp_enabled = get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', false);
+        $code = get_option('unlimited_push_notifications_by_larapush_codes', []);
+
+        # Check if amp is enabled
+        if ($amp_enabled) {
+            include_once plugin_dir_path(__FILE__) . 'partials/amp-header.php';
+        }
+    }
+
+    /**
+     * Just after body opening tag
+     * 
+     * @since 1.0.2
+     */
+    public function ampforwp_body_beginning()
+    {
+        $amp_enabled = get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', false);
+        $locations = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
+        $code = get_option('unlimited_push_notifications_by_larapush_codes', []);
+
+        # Check if amp is enabled
+        if ($amp_enabled) {
+            include_once plugin_dir_path(__FILE__) . 'partials/amp-after-body-opening.php';
+
+            # Check if user has selected header location
+            if (in_array('header', $locations)) {
+                # Add the code to header
+                echo $this->get_widget_code();
+            }
+        }
+    }
+
+    /**
+     * Add custom CSS to AMP
+     * 
+     * @since 1.0.2
+     */
+    public function amp_post_template_css()
     {
         $amp_enabled = get_option('unlimited_push_notifications_by_larapush_add_code_for_amp', false);
         $locations = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []);
@@ -95,13 +134,7 @@ class Unlimited_Push_Notifications_By_Larapush_Public
             } else {
                 $amp_button_color = '#000000';
             }
-            include_once plugin_dir_path(__FILE__) . 'partials/amp-header.php';
-
-            # Check if user has selected header location
-            if (in_array('header', $locations)) {
-                # Add the code to header
-                echo $this->get_widget_code();
-            }
+            include_once plugin_dir_path(__FILE__) . 'partials/amp-style.php';
         }
     }
 

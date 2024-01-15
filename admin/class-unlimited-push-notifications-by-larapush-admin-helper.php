@@ -146,6 +146,26 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             ])
         ]);
 
+        // Check if the response is a WP_Error
+        if (is_wp_error($response)) {
+            // Log the error
+            error_log('WP_Error in wp_remote_post: ' . $response->get_error_message());
+
+            // Log additional server details for debugging
+            error_log('PHP Version: ' . phpversion());
+            error_log('WordPress Version: ' . get_bloginfo('version'));
+            // Add any additional server information you think might be relevant
+
+            // Handle the error
+            add_settings_error(
+                'unlimited-push-notifications-by-larapush-settings',
+                'my_connection_error',
+                'Error: ' . $response->get_error_message(),
+                'error'
+            );
+            return false;
+        }
+
         try {
             $body = json_decode($response['body']);
             if (!$body->success) {
@@ -224,7 +244,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             }
 
             update_option('unlimited_push_notifications_by_larapush_panel_domains', $body->data->domains);
-            if (get_option('unlimited_push_notifications_by_larapush_panel_domains_selected', []) === []) {
+            if (get_option('unlimited_push_notifications_by_larapush_panel_domains_selected', null) === null) {
                 update_option('unlimited_push_notifications_by_larapush_panel_domains_selected', $body->data->domains);
             }
 
@@ -232,10 +252,10 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 'unlimited_push_notifications_by_larapush_panel_migrated_domains',
                 $body->data->migrated_domains
             );
-            if (get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', []) === []) {
+            if (get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', null) === null) {
                 update_option(
                     'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
-                    $body->data->migrated_domains
+                    []
                 );
             }
 
@@ -347,7 +367,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 $permission_dialog = $body->data->integration->ampIntegrationCode->permission_dialog;
                 $permission_dialog_file = ABSPATH . $permission_dialog_filename;
                 file_put_contents($permission_dialog_file, $permission_dialog);
-                
+
                 // Getting WEB Header code URLs and data
                 $script_url = esc_url(get_site_url() . '/' . $js_filename);
                 $code_to_be_added_in_header_data = [
@@ -402,7 +422,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
      * @param int $postId
      * @return bool
      *
-     * @since 1.0.0
+     * @since 1.0.3
      */
     public static function send_notification($postId)
     {
@@ -462,13 +482,13 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             } else {
                 $body = json_decode($response['body']);
                 if (!$body->success) {
-                    set_transient('larapush_error', 'Error: Some issue occurred while sending Push Notification.', 30);
+                    set_transient('larapush_error', 'Error: ' . $body->message, 30);
                     return false;
                 }
                 set_transient('larapush_success', $body->message, 30);
                 return true;
             }
-        } catch (\Throwable $e) {
+        } catch (\Throwable $error) {
             set_transient('larapush_error', 'Error: ' . $error->getMessage(), 30);
             return false;
         }
@@ -486,12 +506,9 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
     {
         // Getting the post title
         $title = get_the_title($postId);
-        $title = str_replace('&#8211;', '-', $title);
 
-        // Limiting the title to 7 words
-        $title = explode(' ', $title);
-        $title = implode(' ', array_slice($title, 0, 7));
-
+        $title = html_entity_decode($title, ENT_QUOTES, 'UTF-8');
+        
         // Converting Get the description of the post
         $body = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::get_description($postId);
 
@@ -538,7 +555,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
         $content = $post->post_content;
 
         // Use a regular expression to search for the first image in the post content
-        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $content, $image);
+        preg_match('/<(img|amp-img).+src=[\'"](?P<src>.+?)[\'"].*>/i', $content, $image);
 
         // If an image is found, return the image URL
         if (!empty($image)) {
@@ -587,12 +604,24 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 
         if (empty($description) || !is_string($description)) {
             // Getting the post content
-            $html = apply_filters('the_content', strip_tags(get_post_field('post_content', $postId)));
+            $html = get_post_field('post_content', $postId);
+            $html = apply_filters('the_content', $html);
+
             if (empty($html)) {
                 return $html;
             }
+
             $dom = new \DOMDocument();
+            libxml_use_internal_errors(true);
             $dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+            libxml_clear_errors();
+
+            $xpath = new \DOMXPath($dom);
+
+            foreach ($xpath->query('//script') as $script) {
+                $script->parentNode->removeChild($script);
+            }
+
             $dom->preserveWhiteSpace = false;
             $description = $dom->textContent;
         }

@@ -100,6 +100,15 @@ try {
                     ); ?> />
                     <p class="description">Send Notifications to all your subscribers on as soon as you publish a post.</p></td>
                 </tr>
+                <tr valign="top">
+                    <th scope="row">Push On Publish WebStories</th>
+                    <td><input type="checkbox" name="unlimited_push_notifications_by_larapush_push_on_publish_for_webstories" value="1" <?php checked(
+                        1,
+                        get_option('unlimited_push_notifications_by_larapush_push_on_publish_for_webstories', 0),
+                        true
+                    ); ?> />
+                    <p class="description">Send Notifications to all your subscribers on as soon as you publish a web story.</p></td>
+                </tr>
                 <?php if ($campaignFilter == true) { ?>
                 <tr valign="top">
                     <th scope="row">Select Domains to Send Notifications</th>

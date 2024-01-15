@@ -4,14 +4,15 @@ Donate link: [LaraPush.com](https://larapush.com/ "Self hosted Push Notification
 Tags: larapush, push notifications, self hosted, unlimited subscribers, AMP
 Requires at least: 3.0.1
 Requires PHP: 7.0
-Tested up to: 6.1.1
-Stable tag: 1.0.0
+Tested up to: 6.2.4
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 LaraPush's "Push Notifications" is a premium add-on exclusively available for the larapush pro panel. With this add-on, users can easily configure larapush and send push notifications directly from WordPress, without any limitations. Additionally, this add-on also supports AMP.
 
 == Description ==
+### [What is LaraPush? 🔗](https://larapush.com)
 
 LaraPush is a self-hosted push notification panel that comes with a one-time cost and lets you add unlimited domains, collect unlimited subscribers and send unlimited campaigns for unlimited period of time. It also supports AMP.
 
@@ -75,8 +76,19 @@ However you will need to have a larapush pro panel installed on your server.
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.3 =
+* Fixed HTML Entities Issue
+* Added Web-Stories Notification Support
+
+= 1.0.2 =
+* AMP Now Gets Validated by AMP Validator
+
+= 1.0.1 =
+* Notification message now doesn't include content inside script tag
+
+= 1.0.0 =
 * Plugin released.
+
 
 == Upgrade Notice ==
 * Need LaraPush Pro v3 or Above

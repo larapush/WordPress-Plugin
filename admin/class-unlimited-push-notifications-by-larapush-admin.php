@@ -230,58 +230,65 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
             'unlimited_push_notifications_by_larapush_push_on_publish',
             isset($_POST['unlimited_push_notifications_by_larapush_push_on_publish']) ? 1 : 0
         );
-
-        // Array of Domains come from Select tag
-        $domains_selected = [];
-        if (isset($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])) {
-            // check if array
-            if (is_array($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])) {
-                // loop through array
-                foreach ($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'] as $domain) {
-                    $domains_selected[] = sanitize_text_field($domain);
-                }
-            }
-        }
         update_option(
-            'unlimited_push_notifications_by_larapush_panel_domains_selected',
-            $domains_selected
+            'unlimited_push_notifications_by_larapush_push_on_publish_for_webstories',
+            isset($_POST['unlimited_push_notifications_by_larapush_push_on_publish_for_webstories']) ? 1 : 0
         );
 
-        // Array of Migrated Domains come from Select tag
-        $migrated_domains_selected = [];
-        if (isset($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])) {
-            // check if array
-            if (is_array($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])) {
-                // loop through array
-                foreach ($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'] as $domain) {
-                    $migrated_domains_selected[] = sanitize_text_field($domain);
+        if(get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) == true){
+            // Array of Domains come from Select tag
+            $domains_selected = [];
+            if (isset($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])) {
+                // check if array
+                if (is_array($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])) {
+                    // loop through array
+                    foreach ($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'] as $domain) {
+                        $domains_selected[] = sanitize_text_field($domain);
+                    }
                 }
             }
+            update_option(
+                'unlimited_push_notifications_by_larapush_panel_domains_selected',
+                $domains_selected
+            );
+    
+            // Array of Migrated Domains come from Select tag
+            $migrated_domains_selected = [];
+            if (isset($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])) {
+                // check if array
+                if (is_array($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])) {
+                    // loop through array
+                    foreach ($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'] as $domain) {
+                        $migrated_domains_selected[] = sanitize_text_field($domain);
+                    }
+                }
+            }
+            update_option(
+                'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
+                $migrated_domains_selected
+            );
+            update_option(
+                'unlimited_push_notifications_by_larapush_add_code_for_amp',
+                isset($_POST['unlimited_push_notifications_by_larapush_add_code_for_amp']) ? 1 : 0
+            );
+    
+            // Array of AMP Code Location come from Select tag
+            $amp_code_location = [];
+            if (isset($_POST['unlimited_push_notifications_by_larapush_amp_code_location'])) {
+                // check if array
+                if (is_array($_POST['unlimited_push_notifications_by_larapush_amp_code_location'])) {
+                    // loop through array
+                    foreach ($_POST['unlimited_push_notifications_by_larapush_amp_code_location'] as $location) {
+                        $amp_code_location[] = sanitize_text_field($location);
+                    }
+                }
+            }
+            update_option(
+                'unlimited_push_notifications_by_larapush_amp_code_location',
+                $amp_code_location
+            );
         }
-        update_option(
-            'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
-            $migrated_domains_selected
-        );
-        update_option(
-            'unlimited_push_notifications_by_larapush_add_code_for_amp',
-            isset($_POST['unlimited_push_notifications_by_larapush_add_code_for_amp']) ? 1 : 0
-        );
 
-        // Array of AMP Code Location come from Select tag
-        $amp_code_location = [];
-        if (isset($_POST['unlimited_push_notifications_by_larapush_amp_code_location'])) {
-            // check if array
-            if (is_array($_POST['unlimited_push_notifications_by_larapush_amp_code_location'])) {
-                // loop through array
-                foreach ($_POST['unlimited_push_notifications_by_larapush_amp_code_location'] as $location) {
-                    $amp_code_location[] = sanitize_text_field($location);
-                }
-            }
-        }
-        update_option(
-            'unlimited_push_notifications_by_larapush_amp_code_location',
-            $amp_code_location
-        );
 
         // Redirect to settings page
         wp_redirect(admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings'));
@@ -322,7 +329,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
     /**
      * Call when post or page status is changed
      *
-     * @since    1.0.0
+     * @since    1.0.3
      */
     public function post_page_status_changed($new_status, $old_status, $post)
     {
@@ -331,24 +338,32 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
             return;
         }
 
-        // If post status is publish and push on publish is enabled then send notification
-        if (
-            $post->post_type == 'post' and
-            $new_status == 'publish' and
-            get_option('unlimited_push_notifications_by_larapush_push_on_publish', false)
-        ) {
-            $notification = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::send_notification($post->ID);
+        if($old_status == 'publish'){
+            return;
+        }
+
+        if($new_status == 'publish'){
+            if ($post->post_type == 'post') {
+                if(get_option('unlimited_push_notifications_by_larapush_push_on_publish', false)){
+                    $notification = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::send_notification($post->ID);
+                }
+            }
+            if ($post->post_type == 'web-story') {
+                if(get_option('unlimited_push_notifications_by_larapush_push_on_publish_for_webstories', false)){
+                    $notification = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::send_notification($post->ID);
+                }
+            }
         }
     }
 
     /**
      * Add Post Row Actions to the post list
      *
-     * @since 1.0.0
+     * @since 1.0.3
      */
     public function add_post_row_actions($actions, $post)
     {
-        if ($post->post_type == 'post') {
+        if ($post->post_type == 'post' or $post->post_type == 'web-story') {
             $actions['send_notification'] =
                 '<a href="#" class="larapush_send_notification" data-post-id="' . $post->ID . '">Send Notification</a>';
         }

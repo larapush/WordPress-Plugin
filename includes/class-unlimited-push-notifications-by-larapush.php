@@ -169,7 +169,7 @@ class Unlimited_Push_Notifications_By_Larapush
      * Register all of the hooks related to the public-facing functionality
      * of the plugin.
      *
-     * @since    1.0.0
+     * @since    1.0.2
      * @access   private
      */
     private function define_public_hooks()
@@ -181,7 +181,12 @@ class Unlimited_Push_Notifications_By_Larapush
 
         # Web Codes Locations
         $this->loader->add_action('wp_head', $plugin_public, 'wp_head');
+
+        # AMP Codes Locations
         $this->loader->add_action('amp_post_template_head', $plugin_public, 'amp_post_template_head');
+        $this->loader->add_action('ampforwp_body_beginning', $plugin_public, 'ampforwp_body_beginning');
+        $this->loader->add_action('amp_post_template_body_open', $plugin_public, 'ampforwp_body_beginning');
+        $this->loader->add_action('amp_post_template_css', $plugin_public, 'amp_post_template_css');
         $this->loader->add_action('amp_post_template_footer', $plugin_public, 'amp_post_template_footer');
         $this->loader->add_filter('the_content', $plugin_public, 'the_content', 20, 1);
     }
