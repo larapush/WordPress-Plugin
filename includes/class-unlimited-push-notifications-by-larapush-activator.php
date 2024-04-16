@@ -24,7 +24,11 @@ class Unlimited_Push_Notifications_By_Larapush_Activator
      */
     public static function activate()
     {
-        add_rewrite_rule('^wp-content/plugins/push-notifications-by-larapush/larapush-reconfigure/?$', 'index.php', 'top');
+        add_rewrite_rule(
+            '^wp-content/plugins/push-notifications-by-larapush/larapush-reconfigure/?$',
+            'index.php',
+            'top'
+        );
         flush_rewrite_rules();
     }
 }

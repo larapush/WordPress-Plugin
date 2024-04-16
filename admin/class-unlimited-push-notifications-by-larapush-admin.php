@@ -121,14 +121,18 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         }
 
         $setup_done = get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false);
-        if (!$setup_done){
-            if(!isset($_GET['page']) || sanitize_text_field($_GET['page']) != 'unlimited-push-notifications-by-larapush-settings' && sanitize_text_field($_GET['page']) != 'unlimited-push-notifications-by-larapush'){
-                ?>
+        if (!$setup_done) {
+            if (
+                !isset($_GET['page']) ||
+                (sanitize_text_field($_GET['page']) != 'unlimited-push-notifications-by-larapush-settings' &&
+                    sanitize_text_field($_GET['page']) != 'unlimited-push-notifications-by-larapush')
+            ) { ?>
                 <div class="notice notice-warning is-dismissible">
-                    <p><strong>Larapush</strong> is not setup yet. <a href="<?php echo admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings'); ?>">Click here</a> to setup.</p>
+                    <p><strong>Larapush</strong> is not setup yet. <a href="<?php echo admin_url(
+                        'admin.php?page=unlimited-push-notifications-by-larapush-settings'
+                    ); ?>">Click here</a> to setup.</p>
                 </div>
-                <?php
-            }
+                <?php }
         }
     }
 
@@ -346,10 +350,13 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         if ($post->post_type == 'post' or $post->post_type == 'web-story') {
             $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro');
             if ($plan == 'pro') {
-                $actions['send_notification'] = '<a href="#" class="larapush_send_notification" data-post-id="' . $post->ID . '">Send Notification</a>';
-            }else{
-                $actions['send_notification'] = '<span onclick="window.open(\'https://larapush.com/upgrade\', \'_blank\')" style="cursor: pointer;">Send Notification</span>';
-            
+                $actions['send_notification'] =
+                    '<a href="#" class="larapush_send_notification" data-post-id="' .
+                    $post->ID .
+                    '">Send Notification</a>';
+            } else {
+                $actions['send_notification'] =
+                    '<span onclick="window.open(\'https://larapush.com/upgrade\', \'_blank\')" style="cursor: pointer;">Send Notification</span>';
             }
         }
         return $actions;

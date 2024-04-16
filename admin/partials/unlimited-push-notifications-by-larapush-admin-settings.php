@@ -52,9 +52,14 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                     <th scope="row">Panel URL</th>
                     <td>
                         <input type="text" name="unlimited_push_notifications_by_larapush_panel_url" value="<?php echo esc_attr(
-                            Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_url'))
+                            Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                                get_option('unlimited_push_notifications_by_larapush_panel_url')
+                            )
                         ); ?>" />
-                        <?php if (get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) == true) { ?>
+                        <?php if (
+                            get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) ==
+                            true
+                        ) { ?>
                             <p class="description"><?php echo $connection == true
                                 ? '<span class="dashicons dashicons-yes" style="color: green;"></span> Connected'
                                 : '<span class="dashicons dashicons-no" style="color: red;"></span> Not Connected'; ?></p>
@@ -64,13 +69,17 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                 <tr valign="top">
                     <th scope="row">Panel Email</th>
                     <td><input type="text" name="unlimited_push_notifications_by_larapush_panel_email" value="<?php echo esc_attr(
-                        Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_email'))
+                        Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                            get_option('unlimited_push_notifications_by_larapush_panel_email')
+                        )
                     ); ?>" /></td>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Panel Password</th>
                     <td><input type="password" name="unlimited_push_notifications_by_larapush_panel_password" value="<?php echo esc_attr(
-                        Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(get_option('unlimited_push_notifications_by_larapush_panel_password'))
+                        Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                            get_option('unlimited_push_notifications_by_larapush_panel_password')
+                        )
                     ); ?>" /></td>
                 </tr>
                 <tr valign="top">
@@ -111,9 +120,15 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                             <select name="unlimited_push_notifications_by_larapush_panel_domains_selected[]" multiple="multiple" style="width: 100%; height: 100px;">
                                 <?php
                                 $domains = get_option('unlimited_push_notifications_by_larapush_panel_domains', []);
-                                $domains_selected = get_option('unlimited_push_notifications_by_larapush_panel_domains_selected', []);
+                                $domains_selected = get_option(
+                                    'unlimited_push_notifications_by_larapush_panel_domains_selected',
+                                    []
+                                );
                                 foreach ($domains as $domain) { ?>
-                                    <option value="<?php echo esc_attr($domain); ?>"  <?php selected(true, in_array($domain, $domains_selected)); ?>><?php echo esc_html($domain); ?></option>
+                                    <option value="<?php echo esc_attr($domain); ?>"  <?php selected(
+    true,
+    in_array($domain, $domains_selected)
+); ?>><?php echo esc_html($domain); ?></option>
                                 <?php }
                                 ?>
                             </select>
@@ -150,12 +165,27 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                     <tr valign="top">
                         <th scope="row">AMP Subscribe Button Location</th>
                         <td>
-                        <?php $amp_code_location = get_option('unlimited_push_notifications_by_larapush_amp_code_location', []); ?>
+                        <?php $amp_code_location = get_option(
+                            'unlimited_push_notifications_by_larapush_amp_code_location',
+                            []
+                        ); ?>
                             <select name="unlimited_push_notifications_by_larapush_amp_code_location[]" multiple="multiple" style="width: 100%; height: 100px;">
-                                <option value="header" <?php selected(true, in_array('header', $amp_code_location)); ?>>Header (All Pages)</option>
-                                <option value="footer" <?php selected(true, in_array('footer', $amp_code_location)); ?>>Footer (All Pages)</option>
-                                <option value="before_post" <?php selected(true, in_array('before_post', $amp_code_location)); ?>>Before Post (Post Pages)</option>
-                                <option value="after_post" <?php selected(true, in_array('after_post', $amp_code_location)); ?>>After Post (Post Pages)</option>
+                                <option value="header" <?php selected(
+                                    true,
+                                    in_array('header', $amp_code_location)
+                                ); ?>>Header (All Pages)</option>
+                                <option value="footer" <?php selected(
+                                    true,
+                                    in_array('footer', $amp_code_location)
+                                ); ?>>Footer (All Pages)</option>
+                                <option value="before_post" <?php selected(
+                                    true,
+                                    in_array('before_post', $amp_code_location)
+                                ); ?>>Before Post (Post Pages)</option>
+                                <option value="after_post" <?php selected(
+                                    true,
+                                    in_array('after_post', $amp_code_location)
+                                ); ?>>After Post (Post Pages)</option>
                             </select>
                             <p class="description">Use ctrl to select multiple locations</p>
                         </td>

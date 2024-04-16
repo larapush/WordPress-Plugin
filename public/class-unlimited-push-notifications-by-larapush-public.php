@@ -230,7 +230,13 @@ class Unlimited_Push_Notifications_By_Larapush_Public
      */
     public function handle_custom_page_request()
     {
-        if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/wp-content/plugins/push-notifications-by-larapush/larapush-reconfigure') !== false) {
+        if (
+            isset($_SERVER['REQUEST_URI']) &&
+            strpos(
+                $_SERVER['REQUEST_URI'],
+                '/wp-content/plugins/push-notifications-by-larapush/larapush-reconfigure'
+            ) !== false
+        ) {
             global $wp_query;
             $wp_query->set_404();
             status_header(404);
@@ -243,19 +249,20 @@ class Unlimited_Push_Notifications_By_Larapush_Public
             if (isset($_GET['email']) && $_GET['email'] == $email) {
                 try {
                     $code = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::codeIntegration();
-                    if($code){
+                    if ($code) {
                         echo json_encode([
-                            'status'=> 'success'
+                            'status' => 'success'
                         ]);
                     }
-                } catch (Throwable $t) { // Catch both Error and Exception types
+                } catch (Throwable $t) {
+                    // Catch both Error and Exception types
                     echo json_encode([
-                        'status'=> 'error'
+                        'status' => 'error'
                     ]);
                 }
                 die();
             } else {
-                include( get_query_template( '404' ) );
+                include get_query_template('404');
             }
         }
     }
