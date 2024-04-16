@@ -45,6 +45,9 @@ class Unlimited_Push_Notifications_By_Larapush_Public
     {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
+
+        // Add rewrite rule
+        add_action('parse_request', [$this, 'handle_custom_page_request']);
     }
 
     /**
@@ -69,7 +72,7 @@ class Unlimited_Push_Notifications_By_Larapush_Public
                     include_once plugin_dir_path(__FILE__) . 'partials/web-header.php';
                 }
             }
-        }else{
+        } else {
             include_once plugin_dir_path(__FILE__) . 'partials/amp-after-body-opening.php';
         }
     }
@@ -92,7 +95,7 @@ class Unlimited_Push_Notifications_By_Larapush_Public
 
     /**
      * Just after body opening tag
-     * 
+     *
      * @since 1.0.2
      */
     public function ampforwp_body_beginning()
@@ -115,7 +118,7 @@ class Unlimited_Push_Notifications_By_Larapush_Public
 
     /**
      * Add custom CSS to AMP
-     * 
+     *
      * @since 1.0.2
      */
     public function amp_post_template_css()
@@ -218,5 +221,42 @@ class Unlimited_Push_Notifications_By_Larapush_Public
             return $content;
         }
         return '';
+    }
+
+    /**
+     * Handle custom page request.
+     *
+     * @since 1.0.4
+     */
+    public function handle_custom_page_request()
+    {
+        if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/wp-content/plugins/push-notifications-by-larapush/larapush-reconfigure') !== false) {
+            global $wp_query;
+            $wp_query->set_404();
+            status_header(404);
+            nocache_headers();
+
+            $email = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::decode(
+                get_option('unlimited_push_notifications_by_larapush_panel_email', '')
+            );
+
+            if (isset($_GET['email']) && $_GET['email'] == $email) {
+                try {
+                    $code = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::codeIntegration();
+                    if($code){
+                        echo json_encode([
+                            'status'=> 'success'
+                        ]);
+                    }
+                } catch (Throwable $t) { // Catch both Error and Exception types
+                    echo json_encode([
+                        'status'=> 'error'
+                    ]);
+                }
+                die();
+            } else {
+                include( get_query_template( '404' ) );
+            }
+        }
     }
 }

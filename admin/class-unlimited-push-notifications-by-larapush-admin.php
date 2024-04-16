@@ -107,27 +107,29 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
     {
         $error_msg = get_transient('larapush_error');
         if ($error_msg) {
-            echo '<div class="notice notice-error is-dismissible"><p><strong>' . esc_html($error_msg) . '</strong></p></div>';
+            echo '<div class="notice notice-error is-dismissible"><p><strong>' .
+                esc_html($error_msg) .
+                '</strong></p></div>';
             delete_transient('larapush_error');
         }
         $success_msg = get_transient('larapush_success');
         if ($success_msg) {
-            echo '<div class="notice notice-success is-dismissible"><p><strong>' . esc_html($success_msg) . '</strong></p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p><strong>' .
+                esc_html($success_msg) .
+                '</strong></p></div>';
             delete_transient('larapush_success');
         }
 
         $setup_done = get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false);
-        if (
-            !$setup_done and
-            !isset($_GET['page']) and
-            sanitize_text_field($_GET['page']) != 'unlimited-push-notifications-by-larapush-settings'
-        ) { ?>
-			<div class="notice notice-warning is-dismissible">
-				<p><strong>Larapush</strong> is not setup yet. <a href="<?php echo admin_url(
-        'admin.php?page=unlimited-push-notifications-by-larapush-settings'
-    ); ?>">Click here</a> to setup.</p>
-			</div>
-			<?php }
+        if (!$setup_done){
+            if(!isset($_GET['page']) || sanitize_text_field($_GET['page']) != 'unlimited-push-notifications-by-larapush-settings' && sanitize_text_field($_GET['page']) != 'unlimited-push-notifications-by-larapush'){
+                ?>
+                <div class="notice notice-warning is-dismissible">
+                    <p><strong>Larapush</strong> is not setup yet. <a href="<?php echo admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings'); ?>">Click here</a> to setup.</p>
+                </div>
+                <?php
+            }
+        }
     }
 
     /**
@@ -235,7 +237,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
             isset($_POST['unlimited_push_notifications_by_larapush_push_on_publish_for_webstories']) ? 1 : 0
         );
 
-        if(get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) == true){
+        if (get_option('unlimited_push_notifications_by_larapush_panel_integration_tried', false) == true) {
             // Array of Domains come from Select tag
             $domains_selected = [];
             if (isset($_POST['unlimited_push_notifications_by_larapush_panel_domains_selected'])) {
@@ -247,31 +249,13 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
                     }
                 }
             }
-            update_option(
-                'unlimited_push_notifications_by_larapush_panel_domains_selected',
-                $domains_selected
-            );
-    
-            // Array of Migrated Domains come from Select tag
-            $migrated_domains_selected = [];
-            if (isset($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])) {
-                // check if array
-                if (is_array($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'])) {
-                    // loop through array
-                    foreach ($_POST['unlimited_push_notifications_by_larapush_panel_migrated_domains_selected'] as $domain) {
-                        $migrated_domains_selected[] = sanitize_text_field($domain);
-                    }
-                }
-            }
-            update_option(
-                'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
-                $migrated_domains_selected
-            );
+            update_option('unlimited_push_notifications_by_larapush_panel_domains_selected', $domains_selected);
+
             update_option(
                 'unlimited_push_notifications_by_larapush_add_code_for_amp',
                 isset($_POST['unlimited_push_notifications_by_larapush_add_code_for_amp']) ? 1 : 0
             );
-    
+
             // Array of AMP Code Location come from Select tag
             $amp_code_location = [];
             if (isset($_POST['unlimited_push_notifications_by_larapush_amp_code_location'])) {
@@ -283,12 +267,8 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
                     }
                 }
             }
-            update_option(
-                'unlimited_push_notifications_by_larapush_amp_code_location',
-                $amp_code_location
-            );
+            update_option('unlimited_push_notifications_by_larapush_amp_code_location', $amp_code_location);
         }
-
 
         // Redirect to settings page
         wp_redirect(admin_url('admin.php?page=unlimited-push-notifications-by-larapush-settings'));
@@ -338,18 +318,18 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
             return;
         }
 
-        if($old_status == 'publish'){
+        if ($old_status == 'publish') {
             return;
         }
 
-        if($new_status == 'publish'){
+        if ($new_status == 'publish') {
             if ($post->post_type == 'post') {
-                if(get_option('unlimited_push_notifications_by_larapush_push_on_publish', false)){
+                if (get_option('unlimited_push_notifications_by_larapush_push_on_publish', false)) {
                     $notification = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::send_notification($post->ID);
                 }
             }
             if ($post->post_type == 'web-story') {
-                if(get_option('unlimited_push_notifications_by_larapush_push_on_publish_for_webstories', false)){
+                if (get_option('unlimited_push_notifications_by_larapush_push_on_publish_for_webstories', false)) {
                     $notification = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::send_notification($post->ID);
                 }
             }

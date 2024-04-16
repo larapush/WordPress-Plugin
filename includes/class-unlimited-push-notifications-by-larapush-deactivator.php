@@ -54,8 +54,6 @@ class Unlimited_Push_Notifications_By_Larapush_Deactivator
             // For Domains to Send Notifications
             'unlimited_push_notifications_by_larapush_panel_domains',
             'unlimited_push_notifications_by_larapush_panel_domains_selected',
-            'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
-            'unlimited_push_notifications_by_larapush_panel_migrated_domains',
             // For AMP
             'unlimited_push_notifications_by_larapush_add_code_for_amp',
             'unlimited_push_notifications_by_larapush_amp_code_location',

@@ -248,17 +248,6 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 update_option('unlimited_push_notifications_by_larapush_panel_domains_selected', $body->data->domains);
             }
 
-            update_option(
-                'unlimited_push_notifications_by_larapush_panel_migrated_domains',
-                $body->data->migrated_domains
-            );
-            if (get_option('unlimited_push_notifications_by_larapush_panel_migrated_domains_selected', null) === null) {
-                update_option(
-                    'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
-                    []
-                );
-            }
-
             return true;
         } catch (\Throwable $e) {
             add_settings_error(
@@ -459,10 +448,6 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 'email' => $email,
                 'password' => $password,
                 'domains' => get_option('unlimited_push_notifications_by_larapush_panel_domains_selected', []),
-                'migrated_domains' => get_option(
-                    'unlimited_push_notifications_by_larapush_panel_migrated_domains_selected',
-                    []
-                ),
                 'title' => $meta['title'],
                 'message' => $meta['body'],
                 'icon' => $meta['icon'],
@@ -508,7 +493,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
         $title = get_the_title($postId);
 
         $title = html_entity_decode($title, ENT_QUOTES, 'UTF-8');
-        
+
         // Converting Get the description of the post
         $body = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::get_description($postId);
 
