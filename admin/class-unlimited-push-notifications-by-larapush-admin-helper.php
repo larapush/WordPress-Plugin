@@ -178,6 +178,11 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 return false;
             }
 
+            // dump and die the response
+            if(isset($body->plan)){
+                update_option('unlimited_push_notifications_by_larapush_panel_plan', $body->plan);
+            }
+
             return true;
         } catch (\Throwable $e) {
             add_settings_error(

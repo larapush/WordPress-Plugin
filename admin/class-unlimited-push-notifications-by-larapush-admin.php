@@ -344,8 +344,13 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
     public function add_post_row_actions($actions, $post)
     {
         if ($post->post_type == 'post' or $post->post_type == 'web-story') {
-            $actions['send_notification'] =
-                '<a href="#" class="larapush_send_notification" data-post-id="' . $post->ID . '">Send Notification</a>';
+            $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro');
+            if ($plan == 'pro') {
+                $actions['send_notification'] = '<a href="#" class="larapush_send_notification" data-post-id="' . $post->ID . '">Send Notification</a>';
+            }else{
+                $actions['send_notification'] = '<span onclick="window.open(\'https://larapush.com/upgrade\', \'_blank\')" style="cursor: pointer;">Send Notification</span>';
+            
+            }
         }
         return $actions;
     }
