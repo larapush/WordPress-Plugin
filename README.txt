@@ -76,6 +76,9 @@ However you will need to have a larapush pro panel installed on your server.
 
 == Changelog ==
 
+= 1.0.4 =
+* Enabled Code Integration for Startup Versions
+
 = 1.0.3 =
 * Fixed HTML Entities Issue
 * Added Web-Stories Notification Support

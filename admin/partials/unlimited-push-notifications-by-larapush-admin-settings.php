@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
  * This file is used to markup the admin-facing aspects of the plugin.
  *
  * @link       https://larapush.com
- * @since      1.0.0
+ * @since      1.0.4
  *
  * @package    Unlimited_Push_Notifications_By_Larapush
  * @subpackage Unlimited_Push_Notifications_By_Larapush/admin/partials

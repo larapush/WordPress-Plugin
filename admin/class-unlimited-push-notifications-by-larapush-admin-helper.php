@@ -110,7 +110,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
     /**
      * Checks if the connection is valid.
      *
-     * @since 1.0.0
+     * @since 1.0.4
      */
     public static function checkConnection()
     {

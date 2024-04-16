@@ -2,14 +2,14 @@
 
 /**
  * @link              https://larapush.com
- * @since             1.0.3
+ * @since             1.0.4
  * @package           Push_Notifications_By_Larapush
  *
  * @wordpress-plugin
  * Plugin Name:       Push Notifications by LaraPush
  * Plugin URI:        https://wordpress.org/plugins/push-notifications-by-larapush/
  * Description:       Push Notifications by LaraPush simplifies push notifications on WordPress with unlimited capabilities and AMP support.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            LaraPush
  * Author URI:        https://larapush.com
  * License:           GPL-2.0+
@@ -28,7 +28,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('UNLIMITED_PUSH_NOTIFICATIONS_BY_LARAPUSH_VERSION', '1.0.3');
+define('UNLIMITED_PUSH_NOTIFICATIONS_BY_LARAPUSH_VERSION', '1.0.4');
 
 /**
  * The code that runs during plugin activation.
