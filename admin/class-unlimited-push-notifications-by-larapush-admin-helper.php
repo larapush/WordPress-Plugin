@@ -334,8 +334,12 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 $file_names = [];
                 $file_names[] = $body->data->integration->integrationCode->js_code_filename;
                 $file_names[] = $body->data->integration->integrationCode->sw_firebase_code_filename;
-                $file_names[] = $body->data->integration->ampIntegrationCode->helper_frame_filename;
-                $file_names[] = $body->data->integration->ampIntegrationCode->permission_dialog_filename;
+
+                // check if ampIntegrationCode is available
+                if (isset($body->data->integration->ampIntegrationCode)) {
+                    $file_names[] = $body->data->integration->ampIntegrationCode->helper_frame_filename;
+                    $file_names[] = $body->data->integration->ampIntegrationCode->permission_dialog_filename;
+                }
                 update_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', $file_names);
 
                 // Writing javascript files
@@ -350,39 +354,45 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
                 $sw_file = ABSPATH . $sw_filename;
                 file_put_contents($sw_file, $sw_code);
 
-                // Writing helper frame file
-                $helper_frame_filename = $body->data->integration->ampIntegrationCode->helper_frame_filename;
-                $helper_frame = $body->data->integration->ampIntegrationCode->helper_frame;
-                $helper_frame_file = ABSPATH . $helper_frame_filename;
-                file_put_contents($helper_frame_file, $helper_frame);
-
-                // Writing permission dialog file
-                $permission_dialog_filename = $body->data->integration->ampIntegrationCode->permission_dialog_filename;
-                $permission_dialog = $body->data->integration->ampIntegrationCode->permission_dialog;
-                $permission_dialog_file = ABSPATH . $permission_dialog_filename;
-                file_put_contents($permission_dialog_file, $permission_dialog);
-
                 // Getting WEB Header code URLs and data
                 $script_url = esc_url(get_site_url() . '/' . $js_filename);
                 $code_to_be_added_in_header_data = [
                     'script_url' => $script_url
                 ];
 
-                // Getting AMP Header code URLs and data
-                $popup_data = $body->data->integration->ampIntegrationCode->popup_data;
-                $amp_code_to_be_added_in_header_data = [
-                    'amp_button_color' => $popup_data->bg
-                ];
-                $amp_code_widget_data = [
-                    'amp_button_text' => $popup_data->button_text,
-                    'amp_unsubscribe_button' => $popup_data->unsubscribe_button
+                $codes = [
+                    'code_to_be_added_in_header_data' => $code_to_be_added_in_header_data
                 ];
 
-                $codes = [
-                    'code_to_be_added_in_header_data' => $code_to_be_added_in_header_data,
-                    'amp_code_to_be_added_in_header_data' => $amp_code_to_be_added_in_header_data,
-                    'amp_code_widget_data' => $amp_code_widget_data
-                ];
+                if (isset($body->data->integration->ampIntegrationCode)) {
+                    // Writing helper frame file
+                    $helper_frame_filename = $body->data->integration->ampIntegrationCode->helper_frame_filename;
+                    $helper_frame = $body->data->integration->ampIntegrationCode->helper_frame;
+                    $helper_frame_file = ABSPATH . $helper_frame_filename;
+                    file_put_contents($helper_frame_file, $helper_frame);
+
+                    // Writing permission dialog file
+                    $permission_dialog_filename =
+                        $body->data->integration->ampIntegrationCode->permission_dialog_filename;
+                    $permission_dialog = $body->data->integration->ampIntegrationCode->permission_dialog;
+                    $permission_dialog_file = ABSPATH . $permission_dialog_filename;
+                    file_put_contents($permission_dialog_file, $permission_dialog);
+
+                    // Getting AMP Header code URLs and data
+                    $popup_data = $body->data->integration->ampIntegrationCode->popup_data;
+                    $amp_code_to_be_added_in_header_data = [
+                        'amp_button_color' => $popup_data->bg
+                    ];
+                    $amp_code_widget_data = [
+                        'amp_button_text' => $popup_data->button_text,
+                        'amp_unsubscribe_button' => $popup_data->unsubscribe_button
+                    ];
+
+                    $codes = array_merge($codes, [
+                        'amp_code_to_be_added_in_header_data' => $amp_code_to_be_added_in_header_data,
+                        'amp_code_widget_data' => $amp_code_widget_data
+                    ]);
+                }
 
                 update_option('unlimited_push_notifications_by_larapush_codes', $codes);
             } else {

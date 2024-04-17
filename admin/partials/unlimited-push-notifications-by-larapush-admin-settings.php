@@ -92,6 +92,8 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                 </tr>
             </table>
 
+            
+            <?php if ($campaignFilter == true) { ?>
             <h2 class="title">One Click Push</h2>
             <div style="position: relative">
                 <table class="form-table">
@@ -113,7 +115,6 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                         ); ?> />
                         <p class="description">Send Notifications to all your subscribers on as soon as you publish a web story.</p></td>
                     </tr>
-                    <?php if ($campaignFilter == true) { ?>
                     <tr valign="top">
                         <th scope="row">Select Domains to Send Notifications</th>
                         <td>
@@ -135,7 +136,6 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                             <p class="description">Use ctrl to select multiple domains</p>
                         </td>
                     </tr>
-                    <?php } ?>
                 </table>
 
                 <?php if ($plan != 'pro') { ?>
@@ -201,6 +201,9 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                 </div>
                 <?php } ?>
             </div>
+
+            <?php } ?>
+
             <button type="submit" class="button button-primary" style="margin-top: 20px;" id="larapush_connect">Save Changes</button>
         </form>
     </div>
