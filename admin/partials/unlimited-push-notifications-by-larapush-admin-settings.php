@@ -24,8 +24,8 @@ try {
     } else {
         $campaignFilter = false;
     }
-} catch (Exception $e) {
-    $error = $e->getMessage();
+} catch (Exception $error) {
+    $error = $error->getMessage();
 }
 $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro');
 ?>
@@ -94,8 +94,8 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
 
             
             <?php if ($campaignFilter == true) { ?>
-            <h2 class="title">One Click Push</h2>
-            <div style="position: relative">
+                <div style="position: relative">
+                    <h2 class="title">One Click Push</h2>
                 <table class="form-table">
                     <tr valign="top">
                         <th scope="row">Push On Publish</th>
@@ -138,20 +138,8 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                     </tr>
                 </table>
 
-                <?php if ($plan != 'pro') { ?>
-                <div style="position: absolute; border-radius: 5px;background: #00000044; width: calc(100% + 20px); height: calc(100% + 20px); top: -10px; left: -10px;">
-                    <div style="display: flex;align-items: center;justify-content: center;position: absolute;text-align: center;top: 50%;left: 50%;transform: translate(-50%, -50%);background: #0000006e;border-radius: 100%;width: 40px;height: 40px;">
-                        <a href="https://larapush.com/upgrade" target="_blank" class="upgrade-tooltip">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px;height: 24px;fill: #fff;"><path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" /></svg>
-                        </a>
-                    </div>
-                </div>
-                <?php } ?>
-            </div>
-
             <h2 class="title">Configure AMP</h2>
             <p>Configure AMP to show subscribe button on AMP pages.</p>
-            <div style="position: relative">
                 <table class="form-table">
                     <tr valign="top">
                         <th scope="row">Enable AMP</th>

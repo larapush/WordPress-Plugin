@@ -184,7 +184,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             }
 
             return true;
-        } catch (\Throwable $e) {
+        } catch (\Throwable $error) {
             add_settings_error(
                 'unlimited-push-notifications-by-larapush-settings',
                 'my_connection_error',
@@ -254,7 +254,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             }
 
             return true;
-        } catch (\Throwable $e) {
+        } catch (\Throwable $error) {
             add_settings_error(
                 'unlimited-push-notifications-by-larapush-settings',
                 'my_connection_error',
@@ -332,33 +332,58 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 
                 #Files Setup
                 $file_names = [];
-                $file_names[] = $body->data->integration->integrationCode->js_code_filename;
-                $file_names[] = $body->data->integration->integrationCode->sw_firebase_code_filename;
 
-                // check if ampIntegrationCode is available
-                if (isset($body->data->integration->ampIntegrationCode)) {
-                    $file_names[] = $body->data->integration->ampIntegrationCode->helper_frame_filename;
-                    $file_names[] = $body->data->integration->ampIntegrationCode->permission_dialog_filename;
-                }
+                // Add js_code_filename if it exists
+                $file_names[] = $body->data->integration->integrationCode->js_code_filename ?? null;
+                $file_names[] = $body->data->integration->integrationCode->sw_firebase_code_filename ?? null;
+                $file_names[] = $body->data->integration->ampIntegrationCode->helper_frame_filename ?? null;
+                $file_names[] = $body->data->integration->ampIntegrationCode->permission_dialog_filename ?? null;
+
+                // Filter out null values from the array
+                $file_names = array_filter($file_names, function ($value) {
+                    return $value !== null;
+                });
+
                 update_option('unlimited_push_notifications_by_larapush_js_filenames_for_site', $file_names);
 
                 // Writing javascript files
-                $js_filename = $body->data->integration->integrationCode->js_code_filename;
-                $js_code = $body->data->integration->integrationCode->js_code;
-                $js_file = ABSPATH . $js_filename;
-                file_put_contents($js_file, $js_code);
+                $js_filename = $body->data->integration->integrationCode->js_code_filename ?? null;
+                $js_code = $body->data->integration->integrationCode->js_code ?? null;
+                if ($js_filename && $js_code) {
+                    $js_file = ABSPATH . $js_filename;
+                    file_put_contents($js_file, $js_code);
+                }
 
                 // Writing service worker file
-                $sw_filename = $body->data->integration->integrationCode->sw_firebase_code_filename;
-                $sw_code = $body->data->integration->integrationCode->sw_firebase_code;
-                $sw_file = ABSPATH . $sw_filename;
-                file_put_contents($sw_file, $sw_code);
+                $sw_filename = $body->data->integration->integrationCode->sw_firebase_code_filename ?? null;
+                $sw_code = $body->data->integration->integrationCode->sw_firebase_code ?? null;
+                if ($sw_filename && $sw_code) {
+                    $sw_file = ABSPATH . $sw_filename;
+                    file_put_contents($sw_file, $sw_code);
+                }
 
                 // Getting WEB Header code URLs and data
-                $script_url = esc_url(get_site_url() . '/' . $js_filename);
-                $code_to_be_added_in_header_data = [
-                    'script_url' => $script_url
-                ];
+                $header_script = $body->data->integration->integrationCode->header_script ?? null;
+                $header_additional_js_code =
+                    $body->data->integration->integrationCode->header_additional_js_code ?? null;
+
+                if ($header_script && $header_additional_js_code) {
+                    $code_to_be_added_in_header_data = [
+                        'script_url' => $header_script
+                    ];
+                } elseif ($js_filename) {
+                    $script_url = esc_url(get_site_url() . '/' . $js_filename);
+                    $code_to_be_added_in_header_data = [
+                        'script_url' => $script_url
+                    ];
+                } else {
+                    $code_to_be_added_in_header_data = [];
+                }
+                if ($header_additional_js_code) {
+                    $code_to_be_added_in_header_data = array_merge($code_to_be_added_in_header_data, [
+                        'additional_js_code' => $header_additional_js_code
+                    ]);
+                }
 
                 $codes = [
                     'code_to_be_added_in_header_data' => $code_to_be_added_in_header_data
@@ -366,26 +391,31 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
 
                 if (isset($body->data->integration->ampIntegrationCode)) {
                     // Writing helper frame file
-                    $helper_frame_filename = $body->data->integration->ampIntegrationCode->helper_frame_filename;
-                    $helper_frame = $body->data->integration->ampIntegrationCode->helper_frame;
-                    $helper_frame_file = ABSPATH . $helper_frame_filename;
-                    file_put_contents($helper_frame_file, $helper_frame);
+                    $helper_frame_filename =
+                        $body->data->integration->ampIntegrationCode->helper_frame_filename ?? null;
+                    $helper_frame = $body->data->integration->ampIntegrationCode->helper_frame ?? null;
+                    if ($helper_frame_filename && $helper_frame) {
+                        $helper_frame_file = ABSPATH . $helper_frame_filename;
+                        file_put_contents($helper_frame_file, $helper_frame);
+                    }
 
                     // Writing permission dialog file
                     $permission_dialog_filename =
-                        $body->data->integration->ampIntegrationCode->permission_dialog_filename;
-                    $permission_dialog = $body->data->integration->ampIntegrationCode->permission_dialog;
-                    $permission_dialog_file = ABSPATH . $permission_dialog_filename;
-                    file_put_contents($permission_dialog_file, $permission_dialog);
+                        $body->data->integration->ampIntegrationCode->permission_dialog_filename ?? null;
+                    $permission_dialog = $body->data->integration->ampIntegrationCode->permission_dialog ?? null;
+                    if ($permission_dialog_filename && $permission_dialog) {
+                        $permission_dialog_file = ABSPATH . $permission_dialog_filename;
+                        file_put_contents($permission_dialog_file, $permission_dialog);
+                    }
 
                     // Getting AMP Header code URLs and data
-                    $popup_data = $body->data->integration->ampIntegrationCode->popup_data;
+                    $popup_data = $body->data->integration->ampIntegrationCode->popup_data ?? null;
                     $amp_code_to_be_added_in_header_data = [
-                        'amp_button_color' => $popup_data->bg
+                        'amp_button_color' => $popup_data->bg ?? '#0F77FF'
                     ];
                     $amp_code_widget_data = [
-                        'amp_button_text' => $popup_data->button_text,
-                        'amp_unsubscribe_button' => $popup_data->unsubscribe_button
+                        'amp_button_text' => $popup_data->button_text ?? 'Subscribe to Notifications',
+                        'amp_unsubscribe_button' => $popup_data->unsubscribe_button ?? 'Unsubscribe'
                     ];
 
                     $codes = array_merge($codes, [
@@ -406,11 +436,11 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             }
 
             return true;
-        } catch (\Throwable $e) {
+        } catch (\Throwable $error) {
             add_settings_error(
                 'unlimited-push-notifications-by-larapush-settings',
                 'my_connection_error',
-                'Error: ' . $e->getMessage(),
+                'Error: ' . $error->getMessage(),
                 'error'
             );
             return false;

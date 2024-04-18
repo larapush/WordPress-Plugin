@@ -68,6 +68,7 @@ class Unlimited_Push_Notifications_By_Larapush_Public
                     array_key_exists('script_url', $code['code_to_be_added_in_header_data'])
                 ) {
                     $script_url = $code['code_to_be_added_in_header_data']['script_url'];
+                    $additional_js_code = $code['code_to_be_added_in_header_data']['additional_js_code'] ?? '';
 
                     include_once plugin_dir_path(__FILE__) . 'partials/web-header.php';
                 }

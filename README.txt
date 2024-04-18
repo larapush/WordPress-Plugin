@@ -4,7 +4,7 @@ Donate link: [LaraPush.com](https://larapush.com/ "Self hosted Push Notification
 Tags: larapush, push notifications, self hosted, unlimited subscribers, AMP
 Requires at least: 3.0.1
 Requires PHP: 7.0
-Tested up to: 6.2.4
+Tested up to: 6.5.2
 Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
