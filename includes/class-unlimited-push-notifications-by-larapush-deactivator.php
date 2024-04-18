@@ -45,6 +45,7 @@ class Unlimited_Push_Notifications_By_Larapush_Deactivator
             'unlimited_push_notifications_by_larapush_panel_url',
             'unlimited_push_notifications_by_larapush_panel_email',
             'unlimited_push_notifications_by_larapush_panel_password',
+            'unlimited_push_notifications_by_larapush_panel_plan',
             // For Panel Integration Files to be deleted
             'unlimited_push_notifications_by_larapush_js_filenames_for_site',
             // Settings Options

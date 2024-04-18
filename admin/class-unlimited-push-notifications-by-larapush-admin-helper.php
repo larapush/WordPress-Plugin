@@ -181,6 +181,8 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             // dump and die the response
             if (isset($body->plan)) {
                 update_option('unlimited_push_notifications_by_larapush_panel_plan', $body->plan);
+            } else {
+                update_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro');
             }
 
             return true;
