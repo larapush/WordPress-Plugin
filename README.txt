@@ -2,11 +2,11 @@
 Contributors: larapush
 Donate link: [LaraPush.com](https://larapush.com/ "Self hosted Push Notifications at one-time cost")
 Tags: larapush, push notifications, self hosted, unlimited subscribers, AMP
-Requires at least: 3.0.1
+Requires at least: 4.7
 Requires PHP: 7.0
-Tested up to: 6.5.2
-Stable tag: 1.0.3
-License: GPLv2 or later
+Tested up to: 6.5
+Stable tag: 1.0.4
+License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 LaraPush's "Push Notifications" is a premium add-on exclusively available for the larapush pro panel. With this add-on, users can easily configure larapush and send push notifications directly from WordPress, without any limitations. Additionally, this add-on also supports AMP.
