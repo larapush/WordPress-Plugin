@@ -51,7 +51,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             ($panel_url['host'] ?? 'localhost') .
             (isset($panel_url['port']) ? ':' . $panel_url['port'] : '');
 
-        return $panel_url . $url_path;
+        return $panel_url . $url_path . '?plugin_version=' . UNLIMITED_PUSH_NOTIFICATIONS_BY_LARAPUSH_VERSION . '&wordpress_version=' . get_bloginfo('version');
     }
 
     /**
