@@ -30,25 +30,50 @@
    */
 
   $(function () {
-    $('.larapush_send_notification').on('click', function (e) {
-      e.preventDefault();
-      var data = {
-        action: 'larapush_send_notification',
-        post_id: $(this).data('post-id'),
-      };
+    async function sendNotificationByLaraPush(id) {
+      var formData = new FormData();
+      formData.append('action', 'larapush_send_notification');
+      formData.append('post_id', id);
 
-      var parent = $(this).parent();
-
-      parent.text('Sending...');
-
-      $.post(ajaxurl, data, function (response) {
-        console.log(JSON.parse(response));
-        if (JSON.parse(response).status == 'success') {
-          parent.text('Sent');
+      try {
+        var ajaxurl = adminAjax.ajaxurl;
+        const response = await fetch(ajaxurl, {
+          method: 'POST',
+          body: formData,
+        });
+        const responseData = await response.json();
+        if (responseData.status === 'success') {
+          return 'Sent';
         } else {
-          parent.text('Some error occured, reload to get error message');
+          return 'Some error occurred, reload to get error message';
         }
-      });
+      } catch (error) {
+        console.error(error);
+        return 'An error occurred while sending the notification';
+      }
+    }
+
+    $('.send-notification-button').on('click', async function (e) {
+      e.preventDefault();
+
+      // get all children divs
+      let postId = $(this).children('div').data().postId;
+      // #larapush-send-notification-btn
+      let messageBtn = $(this).find('#larapush-send-notification-btn');
+      messageBtn.text('Sending...');
+      let notificationSentResult = await sendNotificationByLaraPush(postId);
+      messageBtn.text(notificationSentResult);
+    });
+
+    $('.larapush_send_notification').on('click', async function (e) {
+      e.preventDefault();
+
+      let postId = $(this).data('post-id');
+      let parent = $(this).parent();
+      parent.text('Sending...');
+      let notificationSentResult = await sendNotificationByLaraPush(postId);
+      console.log(notificationSentResult);
+      parent.text(notificationSentResult);
     });
   });
 })(jQuery);

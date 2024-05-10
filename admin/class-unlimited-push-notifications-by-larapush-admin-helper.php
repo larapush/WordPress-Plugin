@@ -51,7 +51,12 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
             ($panel_url['host'] ?? 'localhost') .
             (isset($panel_url['port']) ? ':' . $panel_url['port'] : '');
 
-        return $panel_url . $url_path . '?plugin_version=' . UNLIMITED_PUSH_NOTIFICATIONS_BY_LARAPUSH_VERSION . '&wordpress_version=' . get_bloginfo('version');
+        return $panel_url .
+            $url_path .
+            '?plugin_version=' .
+            UNLIMITED_PUSH_NOTIFICATIONS_BY_LARAPUSH_VERSION .
+            '&wordpress_version=' .
+            get_bloginfo('version');
     }
 
     /**
@@ -506,9 +511,10 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
         ]);
 
         try {
-            if ($response['response']['code'] != 200 or is_wp_error($response)) {
-                $body = json_decode($response['body']);
-                $error = $body->message;
+            if (is_wp_error($response) || $response['response']['code'] != 200) {
+                $error = is_wp_error($response)
+                    ? $response->get_error_message()
+                    : json_decode($response['body'])->message;
                 set_transient('larapush_error', 'Error: ' . $error, 30);
                 return false;
             } else {

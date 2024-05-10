@@ -89,13 +89,18 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
      */
     public function enqueue_scripts()
     {
-        wp_enqueue_script(
-            $this->plugin_name,
-            plugin_dir_url(__FILE__) . 'js/unlimited-push-notifications-by-larapush-admin.js',
-            ['jquery'],
-            $this->version,
-            false
-        );
+        if (current_user_can('administrator')) {
+            wp_enqueue_script(
+                $this->plugin_name,
+                plugin_dir_url(__FILE__) . 'js/unlimited-push-notifications-by-larapush-admin.js',
+                ['jquery'],
+                $this->version,
+                false
+            );
+
+            // Localize the script with new data
+            wp_localize_script($this->plugin_name, 'adminAjax', ['ajaxurl' => admin_url('admin-ajax.php')]);
+        }
     }
 
     /**
@@ -360,6 +365,39 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
             }
         }
         return $actions;
+    }
+
+    /**
+     * Add Admin Bar Menu
+     *
+     * @since 1.0.5
+     */
+    public function add_admin_bar_menu($wp_admin_bar)
+    {
+        if (!is_admin() && (is_single() || is_page())) {
+            // Get the current post id
+            $post_id = get_the_ID();
+
+            $icon_html =
+                '<div style="display: flex;align-items: center;align-content: center;"><div style="display: flex;align-items: center;align-content: center;opacity: 0.8;"><img src="' .
+                plugin_dir_url(__FILE__) .
+                'images/icon.svg' .
+                '"></div>&nbsp;&nbsp;<span id="larapush-send-notification-btn">Send Notification</span></div>';
+            $title = $icon_html;
+
+            $args = [
+                'id' => 'send_notification',
+                'title' => $title, // Updated title includes icon
+                'href' => '#',
+                'meta' => [
+                    'class' => 'send-notification-button',
+                    'title' => 'Send Notification',
+                    'html' => '<div data-post-id="' . esc_attr($post_id) . '"></div>' // Add post ID as a data attribute
+                ]
+            ];
+
+            $wp_admin_bar->add_node($args);
+        }
     }
 
     /**
