@@ -90,6 +90,23 @@ $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro')
                         true
                     ); ?> /></td>
                 </tr>
+                <tr valign="top">
+                    <th scope="row">Who can send notifications</th>
+                    <td>
+                        <?php $access = get_option('unlimited_push_notifications_by_larapush_access', []); ?>
+                        <input type="checkbox" name="unlimited_push_notifications_by_larapush_access[]" value="admin" disabled checked /> Administrator &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="unlimited_push_notifications_by_larapush_access[]" value="editor" <?php checked(
+                            true,
+                            in_array('editor', $access)
+                        ); ?>
+                         /> Editor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="unlimited_push_notifications_by_larapush_access[]" value="author" <?php checked(
+                            true,
+                            in_array('author', $access)
+                        ); ?>
+                        /> Author &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </td>
+                </tr>
             </table>
 
             

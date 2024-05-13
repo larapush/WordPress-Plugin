@@ -56,7 +56,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         add_menu_page(
             'Unlimited Push Notifications by Larapush',
             'LaraPush',
-            'manage_options',
+            'read',
             'unlimited-push-notifications-by-larapush',
             [$this, 'render_menu_page'],
             plugin_dir_url(__FILE__) . 'images/icon.svg',
@@ -89,18 +89,19 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
      */
     public function enqueue_scripts()
     {
-        if (current_user_can('administrator')) {
-            wp_enqueue_script(
-                $this->plugin_name,
-                plugin_dir_url(__FILE__) . 'js/unlimited-push-notifications-by-larapush-admin.js',
-                ['jquery'],
-                $this->version,
-                false
-            );
-
-            // Localize the script with new data
-            wp_localize_script($this->plugin_name, 'adminAjax', ['ajaxurl' => admin_url('admin-ajax.php')]);
+        if (!Unlimited_Push_Notifications_By_Larapush_Admin_Helper::checkIfUserHasAccess()) {
+            return;
         }
+
+        wp_enqueue_script(
+            $this->plugin_name,
+            plugin_dir_url(__FILE__) . 'js/unlimited-push-notifications-by-larapush-admin.js',
+            ['jquery'],
+            $this->version,
+            false
+        );
+
+        wp_localize_script($this->plugin_name, 'adminAjax', ['ajaxurl' => admin_url('admin-ajax.php')]);
     }
 
     /**
@@ -110,6 +111,10 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
      */
     public function admin_notices()
     {
+        if (!Unlimited_Push_Notifications_By_Larapush_Admin_Helper::checkIfUserHasAccess()) {
+            return;
+        }
+
         $error_msg = get_transient('larapush_error');
         if ($error_msg) {
             echo '<div class="notice notice-error is-dismissible"><p><strong>' .
@@ -185,7 +190,7 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         // Check if user has permission to access this page
         if (!current_user_can('manage_options')) {
             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect(
-                'You do not have permission to access this page.'
+                'Only Admins can edit settings.'
             );
         }
 
@@ -212,6 +217,24 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         // Check if panel password is valid
         if (empty(sanitize_text_field($_POST['unlimited_push_notifications_by_larapush_panel_password']))) {
             Unlimited_Push_Notifications_By_Larapush_Admin_Helper::responseErrorAndRedirect('Invalid panel password.');
+        }
+
+        // Check if access is selected, unlimited_push_notifications_by_larapush_access
+        if (isset($_POST['unlimited_push_notifications_by_larapush_access'])) {
+            $access = $_POST['unlimited_push_notifications_by_larapush_access'];
+            if (is_array($access) && (in_array('editor', $access) || in_array('author', $access))) {
+                $accessAllowed = [];
+                foreach ($access as $role) {
+                    if ($role == 'editor' || $role == 'author') {
+                        $accessAllowed[] = $role;
+                    }
+                }
+                update_option('unlimited_push_notifications_by_larapush_access', $accessAllowed);
+            } else {
+                update_option('unlimited_push_notifications_by_larapush_access', []);
+            }
+        } else {
+            update_option('unlimited_push_notifications_by_larapush_access', []);
         }
 
         // Update options
@@ -323,7 +346,6 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
     public function post_page_status_changed($new_status, $old_status, $post)
     {
         if (!empty($_REQUEST['meta-box-loader'])) {
-            // phpcs:ignore
             return;
         }
 
@@ -352,6 +374,13 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
      */
     public function add_post_row_actions($actions, $post)
     {
+        if (
+            !Unlimited_Push_Notifications_By_Larapush_Admin_Helper::checkIfUserHasAccess() ||
+            $post->post_status != 'publish'
+        ) {
+            return $actions;
+        }
+
         if ($post->post_type == 'post' or $post->post_type == 'web-story') {
             $plan = get_option('unlimited_push_notifications_by_larapush_panel_plan', 'pro');
             if ($plan == 'pro') {
@@ -377,6 +406,14 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
         if (!is_admin() && (is_single() || is_page())) {
             // Get the current post id
             $post_id = get_the_ID();
+            $post = get_post($post_id);
+
+            if (
+                !Unlimited_Push_Notifications_By_Larapush_Admin_Helper::checkIfUserHasAccess() ||
+                $post->post_status != 'publish'
+            ) {
+                return;
+            }
 
             $icon_html =
                 '<div style="display: flex;align-items: center;align-content: center;"><div style="display: flex;align-items: center;align-content: center;opacity: 0.8;"><img src="' .
@@ -407,6 +444,10 @@ class Unlimited_Push_Notifications_By_Larapush_Admin
      */
     public function larapush_send_notification()
     {
+        if (!Unlimited_Push_Notifications_By_Larapush_Admin_Helper::checkIfUserHasAccess()) {
+            return;
+        }
+
         $id = sanitize_text_field($_POST['post_id']);
         $notification = Unlimited_Push_Notifications_By_Larapush_Admin_Helper::send_notification($id);
         if ($notification) {

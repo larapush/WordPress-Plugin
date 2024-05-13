@@ -25,6 +25,32 @@ class Unlimited_Push_Notifications_By_Larapush_Admin_Helper
     }
 
     /**
+     * Saves the error and redirects to the settings page.
+     *
+     * @since 1.0.5
+     */
+    public static function checkIfUserHasAccess()
+    {
+        if (current_user_can('administrator') || current_user_can('manage_options')) {
+            return true;
+        }
+
+        $access = get_option('unlimited_push_notifications_by_larapush_access', []);
+        // the access will be array ['editor', 'author]
+
+        $user = wp_get_current_user();
+        $user_roles = $user->roles;
+
+        foreach ($user_roles as $role) {
+            if (in_array($role, $access)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Saves the success and redirects to the settings page.
      *
      * @since 1.0.0
