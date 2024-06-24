@@ -1,7 +1,7 @@
 === Push Notifications by LaraPush ===
 Contributors: larapush
 Donate link: [LaraPush.com](https://larapush.com/ "Self hosted Push Notifications at one-time cost")
-Tags: larapush, push notifications, self hosted, unlimited subscribers, AMP
+Tags: larapush, push notifications, self hosted, unlimited subscribers, AMP, web push notifications
 Requires at least: 4.7
 Requires PHP: 7.0
 Tested up to: 6.5
